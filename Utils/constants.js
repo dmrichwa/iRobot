@@ -1,4 +1,4 @@
-exports.PREFIX = ".";
+exports.PREFIX = "!";
 
 exports.CREATOR_ID = ["163896237479690240", "232337351760805888"]; // user IDs of bot creator
 exports.EMBED_FIELD_LENGTH = 5700; // maximum length of all field values (not including titles)
@@ -33,12 +33,6 @@ exports.EMOJI_STATUSIDLE = "480224750011023360"; // idle
 exports.EMOJI_STATUSDND = "480224749654376449"; // do not disturb
 exports.EMOJI_STATUSOFF = "480224750065549312"; // offline
 
-exports.LOG_CHANNELS = []/*["414609932936020000", // UBreddit.admin
-                    "414616129831567363", // UBreddit.admin_reports
-                    "430809827242147841", // UBreddit.test-channel
-					"454799640068489216", // UBreddit.account_vetting
-					]*/
-
 CHAN_UB_DELETE_EDIT = "488568153941475328";
 CHAN_UB_GENERAL_LOG = "493468802810642463";
 exports.CHAN_UB_DELETE_EDIT = CHAN_UB_DELETE_EDIT;
@@ -47,10 +41,6 @@ exports.CHAN_UB_GENERAL_LOG = CHAN_UB_GENERAL_LOG;
 DELETE_EDIT_CHANNELS = { };
 DELETE_EDIT_CHANNELS[SERV_UB] = CHAN_UB_DELETE_EDIT;
 exports.DELETE_EDIT_CHANNELS = DELETE_EDIT_CHANNELS;
-
-GENERAL_LOG_CHANNELS = { };
-GENERAL_LOG_CHANNELS[SERV_UB] = CHAN_UB_GENERAL_LOG;
-exports.GENERAL_LOG_CHANNELS = GENERAL_LOG_CHANNELS;
 
 exports.CATEGORIES = { // Command Categories
     BASIC: {
