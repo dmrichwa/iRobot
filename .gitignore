@@ -1,0 +1,7 @@
+*.lnk
+*.bat
+config.js
+package-lock.json
+/Objects
+/node_modules
+/.vscode
