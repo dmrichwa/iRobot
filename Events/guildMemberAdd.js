@@ -1,4 +1,5 @@
-const { SERV_UB, ROLE_UB_UNASS, CHAN_UB_WELCOME, COLORS } = require("../utils/constants.js");
+const { user_form, embedify } = require("../Utils");
+const { SERV_UB, ROLE_UB_UNASS, CHAN_UB_WELCOME, GENERAL_LOG_CHANNELS, COLORS } = require("../Utils/constants.js");
 
 module.exports = async (client, member) => {
     if (member.guild.id === SERV_UB) { // welcome message for UBreddit

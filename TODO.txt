@@ -10,6 +10,7 @@
 -!quote add images
 -.e clone (emoji picture)
 -!cinfo (and probably other commands) should default to current channel if not specified
+-!yt command
 
 -Util.js cleanup
 -General file organization cleanup

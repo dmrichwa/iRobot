@@ -368,7 +368,7 @@ function get_user(input, guild = "", defaultUser = "")
                 return resolve(fuzzy); // we have only one fuzzy match, so we can safely assume this is the user they want
             }
         }
-        for (var user of bot.users) { // if we cannot find someone in the guild, try to find from other servers
+        for (var user of client.users) { // if we cannot find someone in the guild, try to find from other servers
             if (get_user_lookthru(user[1])) { // [userid, user object]
                 return;
             }
@@ -380,7 +380,7 @@ function get_user(input, guild = "", defaultUser = "")
             return resolve(fuzzy); // we have only one fuzzy match, so we can safely assume this is the user they want
         }
         // we could not find the user in our database, so try to fetch by ID
-        bot.fetchUser(input).then((user) => {
+        client.fetchUser(input).then((user) => {
             return resolve(user);
         }).catch((error) => {
             return reject(new Error("Could not find user `" + input + "` (no matches)"));

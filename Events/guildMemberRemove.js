@@ -1,4 +1,5 @@
-const { COLORS } = require("../utils/constants.js");
+const { user_form, embedify } = require("../Utils");
+const { GENERAL_LOG_CHANNELS, COLORS } = require("../Utils/constants.js");
 
 module.exports = async (client, member) => {
     const channel = (member.guild.id in GENERAL_LOG_CHANNELS ? GENERAL_LOG_CHANNELS[member.guild.id] : "");
@@ -11,5 +12,5 @@ module.exports = async (client, member) => {
 		["Name", user_form(member), true],
 		["ID", member.id, true],
 	], ["👋 Member Left", member.user.displayAvatarURL], member.toString(), "", "", "", Date.now(), "");
-    bot.channels.get(channel).send({ embed: embed });
+    client.channels.get(channel).send({ embed: embed });
 };

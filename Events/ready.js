@@ -4,14 +4,14 @@ const { getReminders } = require("../Objects.js");
 module.exports = async (client, msg) => {
 	console.log("Starting at " + dateFormat(Date.now(), "LONGTIMEDATE"));
 	console.log("Starting timers...");
-	spawn_timers();
+	spawn_timers(client);
 	console.log("Ready!");
 };
 
 /**
  * Spawns all the timers needed for the bot
  */
-function spawn_timers() {
+function spawn_timers(client) {
 	// reminders
 	function reminders() {
 		(async () => {
