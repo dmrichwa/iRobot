@@ -135,14 +135,7 @@ exports.run = async (client, msg, args) => {
 								})
 							});
 						}
-						roles.sort((a, b) => {
-							if (a.name.toLowerCase() < b.name.toLowerCase())
-								return -1;
-							else if (b.name.toLowerCase() < a.name.toLowerCase())
-								return 1;
-							else
-								return 0;
-						});
+						roles.sort((a, b) => b.calculatedPosition - a.calculatedPosition);
 						var str = "";
 						for (var role of roles) {
 							str += format_role(role, args.length >= 3 && args[2].toLowerCase() === "id", true) + "\n";
