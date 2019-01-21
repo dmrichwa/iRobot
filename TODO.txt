@@ -4,7 +4,6 @@
 -Add !delwarning
 -Banning
 -More logging (besides just message deletion/member joining/etc.)
--Make get_member look at nicknames
 -Make message deletion log ignore auto-deleting commands
 -Slur filter
 -!quote add images

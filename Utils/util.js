@@ -417,11 +417,12 @@ function get_member(input, guild, defaultMember = "")
         }
         for (var member of guild.members) {
             member = member[1]; // [userId, member object]
-            var username = member.user.username.toLowerCase(); // sanitized username
-            if (sanInput === member.user.id || sanInput === username || sanInput === (username + "#" + member.user.discriminator)) { // exact match
+			var username = member.user.username.toLowerCase(); // sanitized username
+			var nickname = (member.nickname || "").toLowerCase(); // sanitized nickname
+            if (sanInput === member.user.id || sanInput === username || (nickname !== "" && sanInput === nickname) || sanInput === (username + "#" + member.user.discriminator)) { // exact match
                 return resolve(member);
             }
-            else if (username.indexOf(sanInput) > -1) { // fuzzy match
+            else if (username.indexOf(sanInput) > -1 || nickname.indexOf(sanInput) > -1) { // fuzzy match
                 if (!fuzzy) { // no other matches, so we can return this
                     fuzzy = member;
                 }
