@@ -1,5 +1,5 @@
 const { find_category, embedify, invalid_usage, count_commands, pluralize } = require("../Utils/");
-const { CATEGORIES, PREFIX } = require("../Utils/constants.js");
+const { CATEGORIES, PREFIX, CREATOR_ID } = require("../Utils/constants.js");
 
 exports.run = async (client, msg, args) => {
 	if (args.length === 1) { // print out categories
@@ -48,6 +48,42 @@ exports.run = async (client, msg, args) => {
 				var cmdStr = "";
 				for (var command of category.cmds) {
 					if (!command.config.hidden) { // do not print out hidden commands
+						cmdStr += "• **" + command.help.name + "**\n";
+					}
+				}
+				embed.addField(catStr, cmdStr, true);
+			}
+		}
+		msg.channel.send({ embed: embed });
+	}
+	else if (args[1].toLowerCase() === "hidden") { // hidden commands
+		if (CREATOR_ID.indexOf(msg.author.id) <= -1) {
+			return msg.channel.send("Must be bot creator to view hidden commands.");
+		}
+		var embed = embedify("Hidden Commands", CATEGORIES.MISC.color,
+		[
+			
+		], "", "Type **" + PREFIX + "help [command]** to learn more", count_commands(null, true) + " " + pluralize("command", "commands", count_commands(null, true)), "", "", "", "");
+		var catArray = [];
+		for (var category in CATEGORIES) {
+			catArray.push(CATEGORIES[category]);
+		}
+		catArray.sort((a, b) => {
+			return b.cmds.length - a.cmds.length;
+		});
+		for (var category of catArray) {
+			var foundHidden = false;
+			for (var command of category.cmds) {
+				if (command.config.hidden) { // check if we have any hidden commands in a category
+					foundHidden = true;
+					break;
+				}
+			}
+			if (foundHidden) { // do not print out empty or entirely unhidden categories
+				const catStr = "**__" + category.shortname + "__**\n";
+				var cmdStr = "";
+				for (var command of category.cmds) {
+					if (command.config.hidden) { // do not print out unhidden commands
 						cmdStr += "• **" + command.help.name + "**\n";
 					}
 				}

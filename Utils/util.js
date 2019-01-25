@@ -184,16 +184,17 @@ exports.add_command = add_command;
 /**
  * Returns the total number of commands in an optional category
  * @param {string} [category] Limit search to this category
+ * @param {Boolean} [hidden] Whether to count only hidden or only nonhidden commands
  * @returns {Number} The number of commands
  */
-function count_commands(category = null)
+function count_commands(category = null, hidden = false)
 {
     var count = 0;
     if (category) // if we passed in a category, limit to this category
     {
         for (var command of CATEGORIES[category].cmds)
         {
-            if (!command.config.hidden) // do not print out hidden commands
+            if (!command.config.hidden || (hidden && command.config.hidden))
                 count++;
         }
     }
@@ -203,7 +204,7 @@ function count_commands(category = null)
         {
             for (var command of CATEGORIES[category].cmds)
             {
-                if (!command.config.hidden) // do not print out hidden commands
+                if (!command.config.hidden || (hidden && command.config.hidden))
                     count++;
             }
         }
