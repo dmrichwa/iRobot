@@ -10,9 +10,9 @@
 -.e clone (emoji picture)
 -!cinfo (and probably other commands) should default to current channel if not specified
 -!yt command
+-Mindsweeper using spoilers
 
 -Util.js cleanup
--General file organization cleanup
 -Merge the various sqlite files together
 -Make typing during command execution work (probably requires wrapping all commands in Promises)
 -Paginate embeds that can get long

@@ -2,6 +2,7 @@
 *.bat
 config.js
 package-lock.json
+TODO.txt
 /Objects
 /node_modules
 /.vscode
