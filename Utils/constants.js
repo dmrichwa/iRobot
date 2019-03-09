@@ -11,7 +11,7 @@ exports.SERV_TYLER = SERV_TYLER;
 exports.ROLE_UB_MUTE = "432405235819085824"; // mute role
 exports.ROLE_UB_UNASS = "416690774835724289"; // unassigned role
 
-exports.CHAN_UB_WELCOME = "412821064607858700"; // welcome channel (general)
+exports.CHAN_UB_WELCOME = "553716130645278720"; // welcome channel (welcome)
 exports.CHAN_UB_SUGGEST = "414993916790571027"; // suggestions
 exports.CHAN_UB_FOOD = "484371390015995904"; // food drive
 exports.CHAN_TYLER_HALLOFLAME = "467523175111196672"; // hall-of-lame
