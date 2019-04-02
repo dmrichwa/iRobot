@@ -9,7 +9,7 @@ exports.run = async (client, msg, args) => {
 			return msg.channel.send("You cannot kick somebody with the Kick Members permission.");
 		}
 		let reason = args.join(" ");
-		member.send("**You have been banned from %s. Reason: %s**".format(msg.guild.name, reason));
+		member.send(`**You have been banned from ${msg.guild.name}. Reason: ${reason}**`);
 		member.ban(user_form(msg.member) + ": " + reason);
 		msg.channel.send("<@" + member.id + "> has been banned.");
 	}).catch(error => {
