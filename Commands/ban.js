@@ -8,7 +8,9 @@ exports.run = async (client, msg, args) => {
 		if (member.hasPermission("KICK_MEMBERS")) {
 			return msg.channel.send("You cannot kick somebody with the Kick Members permission.");
 		}
-		member.ban(user_form(msg.member) + ": " + args.join(" "));
+		let reason = args.join(" ");
+		member.send("**You have been banned from %s. Reason: %s**".format(msg.guild.name, reason));
+		member.ban(user_form(msg.member) + ": " + reason);
 		msg.channel.send("<@" + member.id + "> has been banned.");
 	}).catch(error => {
 		msg.channel.send("Error: " + error.message);
