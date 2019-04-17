@@ -117,8 +117,8 @@ function spawn_timers(client) {
 	if (millisTill < 0) { // it has passed that given time today, try again tomorrow
 		millisTill += 86400000;
 	}
-	/*setTimeout(function() {
+	setTimeout(function() {
 		course_watcher();
 		setInterval(course_watcher, 24*60*60*1000);
-	}, millisTill);*/
+	}, millisTill);
 }
