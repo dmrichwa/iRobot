@@ -102,5 +102,5 @@ exports.help = {
 	aliases: [],
 	category: "Courses",
 	description: "Adds a course or course section to be watched",
-	usage: "!addwatcher CSE341LR [A1]"
+	usage: "addwatcher CSE341LR [A1]"
 };

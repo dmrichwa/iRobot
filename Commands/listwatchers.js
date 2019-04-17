@@ -50,5 +50,5 @@ exports.help = {
 	aliases: ["listwatcher"],
 	category: "Courses",
 	description: "Lists your active watchers",
-	usage: "!listwatchers (safe)"
+	usage: "listwatchers (safe)"
 };

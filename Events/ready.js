@@ -67,7 +67,7 @@ function spawn_timers(client) {
 											skipList.push(row.abbr + row.num + " skipped because it has no section (not implemented yet)");
 											return next();
 										}
-										var url = "https://prv-web.sens.buffalo.edu/apis/schedule2/schedule2/course/semester/spring/abbr/" + row.abbr + "/num/" + row.num + "/section/" + row.section;
+										var url = "https://prv-web.sens.buffalo.edu/apis/schedule2/schedule2/course/semester/fall/abbr/" + row.abbr + "/num/" + row.num + "/section/" + row.section;
 
 										(async () => {
 											try {
