@@ -6,14 +6,14 @@ exports.run = async (client, msg, args) => {
 		return msg.channel.send({ embed: invalid_usage(this) });
 	}
 	const nums = args[1].split(',').map(n => Number(n));
-	for (var num of nums) {
-		if (isNaN(num) || !Number.isInteger(num) || num < 0) {
+	for (let num of nums) {
+		if (!Number.isInteger(num) || num < 0) {
 			return msg.channel.send("Numbers must be non-negative integers");
 		}
 	}
 	const doId = (args[2] && args[2].toLowerCase() === "id");
-	var roleArray = [];
-	for (var role of get_role_array(msg.guild)) {
+	let roleArray = [];
+	for (let role of get_role_array(msg.guild)) {
 		if (nums.includes(role.members.size)) {
 			roleArray.push(role);
 		}
@@ -21,14 +21,11 @@ exports.run = async (client, msg, args) => {
 	roleArray.sort((a, b) => {
 		return b.members.size - a.members.size;
 	});
-	var str = "";
-	for (var role of roleArray) {
+	let str = "None";
+	for (let role of roleArray) {
 		str += "(" + role.members.size + ") " + format_role(role, doId, true) + "\n";
 	}
-	if (str === "") {
-		str = "None";
-	}
-	var embed = embedify("", CATEGORIES.INFO.color,
+	let embed = embedify("", CATEGORIES.INFO.color,
 	[
 		["Counted Roles", str, true, "\n"],
 	], "", "", "", "", "", "", "");
