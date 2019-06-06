@@ -69,8 +69,7 @@ exports.run = async (client, msg, args) => {
 						else { // image
 							directUrl = parsed.items[arrayIndex].image_versions2.candidates[0].url;
 						}
-						const postUrl = "https://www.instagram.com/p/" + parsed.items[arrayIndex].code;
-						msg.channel.send(postUrl + "\nDirect link: <" + directUrl + ">");
+						msg.channel.send(directUrl);
 					}
 				}
 			}
