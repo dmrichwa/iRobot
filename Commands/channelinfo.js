@@ -1,10 +1,11 @@
 const { dateFormat, embedify, invalid_usage, rainbow, get_channel, boolean_to_yesno } = require("../Utils/");
 
 exports.run = async (client, msg, args) => {
-	if (args.length < 2) {
+	if (args.length < 1) {
 		return msg.channel.send({ embed: invalid_usage(this) });
 	}
-	get_channel(args.splice(1).join(" "), msg.guild).then(channel => {
+	const channel = (args.length >= 2 ? args.splice(1).join(" ") : msg.channel);
+	get_channel(channel, msg.guild).then(channel => {
 		if (channel.type !== "text" && channel.type !== "voice") {
 			return msg.channel.send("This command only works on text and voice channels");
 		}
