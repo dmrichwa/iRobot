@@ -3,10 +3,10 @@ const { getReminders } = require("../Objects.js");
 
 exports.run = async (client, msg, args) => {
 	(async () => {
-		var remindList = [];
-		var reminders = await getReminders();
-		for (var msgId in reminders) {
-			var reminder = reminders[msgId];
+		let remindList = [];
+		let reminders = await getReminders();
+		for (let msgId in reminders) {
+			let reminder = reminders[msgId]
 			await new Promise(next => {
 				get_user(reminder.author).then(user => {
 					if (user === msg.author) {
@@ -22,16 +22,17 @@ exports.run = async (client, msg, args) => {
 				});
 			});
 		}
-		remindList.sort((a, b) => {
-			return a.tick - b.tick;
-		});
-		var str = "";
-		var index = 0;
-		for (var reminder of remindList) {
+		remindList.sort((a, b) => a.tick - b.tick);
+		let str = "";
+		let index = 0;
+		for (let reminder of remindList) {
 			index++;
 			const millisTill = reminder.tick - new Date();
-			const secs = Math.floor((millisTill / 1000) % 60), mins = Math.floor(millisTill / (1000 * 60) % 60), hours = Math.floor(millisTill / (1000 * 60 * 60) % 24), days = Math.floor(millisTill / (1000 * 60 * 60 * 24));
-			var timestamp = "";
+			const secs = Math.floor((millisTill / 1000) % 60),
+				mins = Math.floor(millisTill / (1000 * 60) % 60),
+				hours = Math.floor(millisTill / (1000 * 60 * 60) % 24),
+				days = Math.floor(millisTill / (1000 * 60 * 60 * 24));
+			let timestamp = "";
 			if (days !== 0) {
 				timestamp += days + "d";
 			}
@@ -50,7 +51,7 @@ exports.run = async (client, msg, args) => {
 			index = reminder.init.toString().slice(-4);
 			str += "[" + index + "] **" + timestamp + "** " + reminder.msg + "\n";
 		}
-		var embed = embedify("", rainbow(25, Math.random() * 25),
+		let embed = embedify("", rainbow(25, Math.random() * 25),
 		[
 		], ["Reminder List", msg.author.avatarURL], str, remindList.length + " " + pluralize("reminder", "reminders", remindList.length), "", "", "", "");
 		msg.channel.send({ embed: embed });
@@ -67,5 +68,5 @@ exports.help = {
 	aliases: ["remindlist", "reminderlist", "reminderslist"],
 	category: "Miscellaneous",
 	description: "Lists your currently active reminders",
-	usage: "say (channel Id) (message)"
+	usage: "reminders"
 };
