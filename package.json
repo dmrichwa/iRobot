@@ -1,0 +1,16 @@
+{
+  "name": "iRobot2",
+  "dependencies": {
+    "discord.js": "*",
+    "image-average-color": "*",
+    "lastfm": "*",
+    "load-json-file": "*",
+    "sqlite3": "*",
+    "sqlite": "*",
+    "write-json-file": "*",
+    "got": "*",
+    "dateformat": "*",
+    "chalk": "*",
+    "moment": "*"
+  }
+}
