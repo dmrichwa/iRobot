@@ -47,7 +47,7 @@ function spawn_timers(client) {
 	setInterval(reminders, 10*1000); // runs every 10 seconds
 
 	// course watcher
-	function course_watcher() {
+	/*function course_watcher() {
 		sql.open("./Objects/coursewatcher.sqlite").then(() => {
 			(async () => {
 				sql.all(`SELECT * FROM courseWatchUsers`).then(userRows => {
@@ -120,5 +120,5 @@ function spawn_timers(client) {
 	setTimeout(function() {
 		course_watcher();
 		setInterval(course_watcher, 24*60*60*1000);
-	}, millisTill);
+	}, millisTill);*/
 }
