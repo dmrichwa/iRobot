@@ -13,7 +13,13 @@ exports.run = async (client, msg, args) => {
 		inviteList.sort((a, b) => {
 			return b.uses - a.uses;
 		});
+		let field_count = 0;
 		for (var invite of inviteList) {
+			// RichEmbeds have a max field count of 25
+			if (field_count >= 25) {
+				embed.setTitle("Invites (first 25 shown)");
+				break;
+			}
 			var header = "";
 			var content = "";
 			header += "[" + invite.code + "] ";
@@ -24,8 +30,9 @@ exports.run = async (client, msg, args) => {
 			content += (invite.maxUses === 0 ? "" : " / " + invite.maxUses);
 			content += " uses";
 			content += (invite.maxAge === 0 ? ", never expires" : ", expires after " + invite.maxAge + " seconds");
-
+			
 			embed.addField(header, content, false);
+			field_count++;
 		}
 		msg.channel.send({ embed: embed });
 	}).catch(error => {
