@@ -61,6 +61,35 @@ exports.run = async (client, msg, args) => {
                         var streamer = lastfm.stream(username);
                         var avatarUrl = data.user.image[0]["#text"];
                         var scrobbleCount = data.user.playcount;
+                        streamer.on("lastPlayed", async function(track) {
+                            try {
+                                var trackImage = track.image[2]["#text"];
+                                if (trackImage === "") {
+                                    //trackImage = "https://cdn.browshot.com/static/images/not-found.png";
+                                    trackImage = "https://lastfm-img2.akamaized.net/i/u/64s/4128a6eb29f94943c9d206c08e625904";
+                                }
+                                var trackDate = (track.date ? "Played on " + dateFormat(track.date["#text"], "MEDTIMEDATE") : "**Now playing**");
+                                var avgColor, didError = false;
+                                try {
+                                    avgColor = await get_color_from_URL(trackImage);
+                                }
+                                catch (error) {
+                                    console.log("Error: " + error);
+                                    didError = true;
+                                    avgColor = rainbow(25, Math.random(25));
+                                }
+                                var embed = embedify("", avgColor,
+                                [
+                                    ["Track", track.name, true],
+                                    ["Artist", track.artist["#text"], true],
+                                ], ["Last track for " + username, avatarUrl, "http://last.fm/user/" + username], trackDate, scrobbleCount.toLocaleString() + " scrobbles" + (didError ? " • Failed to load track image" : ""), "", trackImage, "", "");
+                                msg.channel.send({ embed: embed });
+                            }
+                            catch (error) {
+                                msg.channel.send("This user has not scrobbled anything yet.");
+                                console.log("Error: " + error)
+                            }
+                        });
                         streamer.on("nowPlaying", async function(track) {
                             try {
                                     var trackImage = track.image[2]["#text"];
