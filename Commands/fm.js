@@ -54,76 +54,46 @@ exports.run = async (client, msg, args) => {
         }
 
         async function fm_handle(username) {
-            lastfm.request("user.getInfo", {
+            // TODO: Re-add grabbing avatar URL
+            // user.getInfo
+            // avatarUrl = data.user.image[0]["#text"];
+            lastfm.request("user.getrecenttracks", {
                 user: username,
                 handlers: {
-                    success: function(data) {
-                        var streamer = lastfm.stream(username);
-                        var avatarUrl = data.user.image[0]["#text"];
-                        var scrobbleCount = data.user.playcount;
-                        streamer.on("lastPlayed", async function(track) {
+                    success: async function(data) {
+                        try {
+                            let info = data.recenttracks;
+                            let scrobbleCount = info["@attr"].total;
+
+                            let track = { album: info.track[0].album["#text"], artist: info.track[0].artist["#text"], name: info.track[0].name, image: info.track[0].image.pop()["#text"], date: info.track[0].date};
+                            
+                            if (track.image === "") {
+                                track.image = "https://lastfm-img2.akamaized.net/i/u/64s/4128a6eb29f94943c9d206c08e625904";
+                            }
+
+                            let trackDate = (track.date ? "Played on " + dateFormat(track.date["#text"], "MEDTIMEDATE") : "**Now playing**");
+                            let avgColor, didError = false;
                             try {
-                                var trackImage = track.image[2]["#text"];
-                                if (trackImage === "") {
-                                    //trackImage = "https://cdn.browshot.com/static/images/not-found.png";
-                                    trackImage = "https://lastfm-img2.akamaized.net/i/u/64s/4128a6eb29f94943c9d206c08e625904";
-                                }
-                                var trackDate = (track.date ? "Played on " + dateFormat(track.date["#text"], "MEDTIMEDATE") : "**Now playing**");
-                                var avgColor, didError = false;
-                                try {
-                                    avgColor = await get_color_from_URL(trackImage);
-                                }
-                                catch (error) {
-                                    console.log("Error: " + error);
-                                    didError = true;
-                                    avgColor = rainbow(25, Math.random(25));
-                                }
-                                var embed = embedify("", avgColor,
-                                [
-                                    ["Track", track.name, true],
-                                    ["Artist", track.artist["#text"], true],
-                                ], ["Last track for " + username, avatarUrl, "http://last.fm/user/" + username], trackDate, scrobbleCount.toLocaleString() + " scrobbles" + (didError ? " • Failed to load track image" : ""), "", trackImage, "", "");
-                                msg.channel.send({ embed: embed });
+                                avgColor = await get_color_from_URL(track.image);
                             }
                             catch (error) {
-                                msg.channel.send("This user has not scrobbled anything yet.");
-                                console.log("Error: " + error)
+                                console.log("Error: " + error);
+                                didError = true;
+                                track.image = "https://lastfm-img2.akamaized.net/i/u/64s/4128a6eb29f94943c9d206c08e625904";
+                                avgColor = rainbow(25, Math.random(25));
                             }
-                        });
-                        streamer.on("nowPlaying", async function(track) {
-                            try {
-                                    var trackImage = track.image[2]["#text"];
-                                    if (trackImage === "") {
-                                        //trackImage = "https://cdn.browshot.com/static/images/not-found.png";
-                                        trackImage = "https://lastfm-img2.akamaized.net/i/u/64s/4128a6eb29f94943c9d206c08e625904";
-                                    }
-                                    var trackDate = (track.date ? "Played on " + dateFormat(track.date["#text"], "MEDTIMEDATE") : "**Now playing**");
-                                    var avgColor, didError = false;
-                                    try {
-                                        avgColor = await get_color_from_URL(trackImage);
-                                    }
-                                    catch (error) {
-                                        console.log("Error: " + error);
-                                        didError = true;
-                                        avgColor = rainbow(25, Math.random(25));
-                                    }
-                                    var embed = embedify("", avgColor,
-                                    [
-                                        ["Track", track.name, true],
-                                        ["Artist", track.artist["#text"], true],
-                                    ], ["Last track for " + username, avatarUrl, "http://last.fm/user/" + username], trackDate, scrobbleCount.toLocaleString() + " scrobbles" + (didError ? " • Failed to load track image" : ""), "", trackImage, "", "");
-                                    msg.channel.send({ embed: embed });
-                            }
-                            catch (error) {
-                                msg.channel.send("This user has not scrobbled anything yet.");
-                                console.log("Error: " + error)
-                            }
-                        });
-                        streamer.on("error", function(error) {
-                            msg.channel.send("Error: " + error.message);
-                        });
-                        streamer.start();
-                        streamer.stop();
+                            var embed = embedify("", avgColor,
+                            [
+                                ["Track", track.name ? track.name : "No Name", true],
+                                ["Album", track.album ? track.album : "No Album", true],
+                                ["Artist", track.artist ? track.artist : "No Artist", true],
+                            ], ["Last track for " + username, client.user.displayAvatarURL, "http://last.fm/user/" + username], trackDate, scrobbleCount.toLocaleString() + " scrobbles" + (didError ? " • Failed to load track image" : ""), "", track.image, "", "");
+                            msg.channel.send({ embed: embed });
+                        }
+                        catch (error) {
+                            msg.channel.send("This user has not scrobbled anything yet.");
+                            console.log("Error: " + error)
+                        }
                     },
                     error: function(error) {
                         msg.channel.send("Error: " + error.message);
