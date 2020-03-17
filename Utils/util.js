@@ -266,7 +266,7 @@ async function get_color_from_URL(url)
         {
             try
             {
-				const response = await got(url, { encoding: null });
+                const response = await got(url, { responseType: "buffer" });
                 average(response.body, (err, col) =>
                 {
                     if (err)
