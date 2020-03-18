@@ -1,5 +1,5 @@
 const { sql, embedify, invalid_usage, get_role_array, has_permission, get_role, pluralize, format_role } = require("../Utils/");
-const { ROLE_UB_UNASS, CATEGORIES, COLORS } = require("../Utils/constants.js");
+const { CATEGORIES, COLORS } = require("../Utils/constants.js");
 
 exports.run = async (client, msg, args) => {
 	if (args.length === 1) {
@@ -220,9 +220,6 @@ exports.run = async (client, msg, args) => {
 							}
 							else { // user does not have role, so add
 								msg.member.addRole(role);
-								if (msg.member.roles.has(ROLE_UB_UNASS)) { // remove unassigned role when they add a role
-									msg.member.removeRole(ROLE_UB_UNASS);
-								}
 								embed = embedify("", CATEGORIES.MISC.color,
 								[
 									["Success", "Role " + format_role(role, false, true) + " added"]

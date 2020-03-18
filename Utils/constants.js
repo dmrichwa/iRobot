@@ -9,7 +9,6 @@ exports.SERV_UB = SERV_UB;
 exports.SERV_TYLER = SERV_TYLER;
 
 exports.ROLE_UB_MUTE = "432405235819085824"; // mute role
-exports.ROLE_UB_UNASS = "416690774835724289"; // unassigned role
 
 exports.CHAN_UB_WELCOME = "553716130645278720"; // welcome channel (welcome)
 exports.CHAN_UB_SUGGEST = "414993916790571027"; // suggestions
