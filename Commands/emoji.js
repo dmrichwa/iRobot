@@ -28,7 +28,7 @@ exports.config = {
 
 exports.help = {
 	name: "emoji",
-	aliases: ["e"],
+	aliases: ["e", "hugeemoji", "hugemoji"],
 	category: "Basic",
 	description: "Shows the enlarged picture of an emoji",
 	usage: "emoji (emoji)"
