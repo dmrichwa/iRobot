@@ -67,7 +67,7 @@ function spawn_timers(client) {
 											skipList.push(row.abbr + row.num + " skipped because it has no section (not implemented yet)");
 											return next();
 										}
-										var url = "https://prv-web.sens.buffalo.edu/apis/schedule2/schedule2/course/semester/spring/abbr/" + row.abbr + "/num/" + row.num + "/section/" + row.section;
+										var url = "https://prv-web.sens.buffalo.edu/apis/schedule2/schedule2/course/semester/fall/abbr/" + row.abbr + "/num/" + row.num + "/section/" + row.section;
 
 										(async () => {
 											try {
@@ -117,8 +117,8 @@ function spawn_timers(client) {
 	if (millisTill < 0) { // it has passed that given time today, try again tomorrow
 		millisTill += 86400000;
 	}
-	/*setTimeout(function() {
+	setTimeout(function() {
 		course_watcher();
 		setInterval(course_watcher, 24*60*60*1000);
-	}, millisTill);*/
+	}, millisTill);
 }

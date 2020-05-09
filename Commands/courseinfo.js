@@ -12,7 +12,7 @@ exports.run = async (client, msg, args) => {
 				return msg.channel.send({ embed: invalid_usage(this) });
 			}
 			const abbr = courseParsed[1], num = courseParsed[2], section = courseParsed[3];
-			const url = "https://prv-web.sens.buffalo.edu/apis/schedule2/schedule2/course/semester/spring/abbr/" + abbr + "/num/" + num + "/section/" + section;
+			const url = "https://prv-web.sens.buffalo.edu/apis/schedule2/schedule2/course/semester/fall/abbr/" + abbr + "/num/" + num + "/section/" + section;
 			const response = await got(url);
 			const parsed = JSON.parse(response.body);
 			const openSeats = parsed.enrollment.section - parsed.enrollment.enrolled;
