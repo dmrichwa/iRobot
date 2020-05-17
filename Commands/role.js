@@ -135,6 +135,14 @@ exports.run = async (client, msg, args) => {
 								})
 							});
 						}
+						
+						// Add in the role separators
+						for (let role of get_role_array(msg.guild)) {
+							if (role.name.startsWith("=====")) {
+								roles.push(role);
+							}
+						}
+
 						roles.sort((a, b) => b.calculatedPosition - a.calculatedPosition);
 						var str = "";
 						for (var role of roles) {
