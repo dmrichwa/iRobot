@@ -97,16 +97,47 @@ function embedify(title, color, fields, author = "", desc = "", footer = "", ima
         fieldLength += field[1].length; // add to total field length
         var firstField = true;
 
-        while (field[1].length > 0) // split apart by special chars every 1024 chars
-        {
-            var char = field[3]; // separator char
-            if (!char) char = "\n";
-            var pos = field[1].lastIndexOf(char, 1024); // find last separator char in first 1024 chars
-            if (pos === -1 || field[1].length <= 1024) // do not do anything if no separator chars or field is short enough
-                pos = field[1].length;
-            embedObject.addField((firstField ? field[0] : (field[0] + " (cont.)")), field[1].substr(0, pos), field[2]);
-            field[1] = field[1].substr(pos + 1); // cut off first part of field including separator char
-            firstField = false; // add (cont.) to rest of fields
+        // Split apart by separators at most every 1024 characters
+        while (field[1].length > 0) {
+            // Grab the separator
+            let separator = field[3];
+            // If none specified, assume newline character
+            if (!separator) {
+                separator = "\n";
+            }
+
+            // Find index of last separator in first 1024 characters
+            // NB: 2nd argument is index of string for BEGINNING of match
+            // We go 1 past so we can find a separator that's directly after 1024 "real" characters
+            // We always go 1 past because even if the separator is multiple characters long,
+            //  lastIndexOf() will still find it.
+            let new_field_length = field[1].lastIndexOf(separator, 1024);
+
+            // If lastIndexOf() returned -1, we found no separators, so set to length of field
+            if (new_field_length === -1) {
+                new_field_length = field[1].length;
+            }
+
+            // If field length is greater than 1024 and no separators were found in the first 1024 characters,
+            //  we forcefully cut off the field. This means there is nothing to skip over when splitting the field.
+            //  If new_field_length <= 1024 at this point, we used a separator, so we should skip over it when splitting.
+            //  (Or field length <= 1024, so there is no splitting so this is irrelevant)
+            let used_separator = true;
+            if (new_field_length > 1024) {
+                new_field_length = 1024;
+                used_separator = false;
+            }
+
+            // Add the field to the embed object, cutting off at right before the separator
+            embedObject.addField((firstField ? field[0] : (field[0] + " (cont.)")), field[1].substr(0, new_field_length), field[2]);
+
+            // If we used a separator, skip past it when cutting off for the next field
+            // If we did not, do not skip anything
+            let skip_length = used_separator ? separator.length : 0;
+            field[1] = field[1].substr(new_field_length + skip_length);
+
+            // Set flag so we can add "(cont.)" to the rest of the fields
+            firstField = false;
         }
     }
     
