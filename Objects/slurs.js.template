@@ -1,0 +1,11 @@
+// Format: slur: safe_slur
+// Slurs must be lowercase
+const slurs = {
+    slur1: "sl*r1",
+    slur2: "sl*r2",
+    slur3: "s*ur3",
+}
+
+module.exports = {
+    slurs: slurs,
+}

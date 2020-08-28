@@ -1,5 +1,6 @@
 const { PREFIX } = require("../Utils/constants.js");
 const { dateFormat, user_form } = require("../Utils/");
+const { run_slur_checker } = require("../Utils/slurChecker.js");
 
 module.exports = async (client, msg) => {
     if (msg.author.bot) return; // do not respond to other bots or itself
@@ -10,9 +11,14 @@ module.exports = async (client, msg) => {
 		}
 		console.log(str);
 	}
-	if (!msg.content.startsWith(PREFIX)) return; // do not continue if the message does not start with the prefix
 
-	var args = msg.content.match(/\S+/gi);
+	// Perform per-message functions
+	run_slur_checker(client, msg);
+
+	// Stop if the message does not start with the prefix
+	if (!msg.content.startsWith(PREFIX)) return;
+
+	let args = msg.content.match(/\S+/gi);
 	const command = client.commands.get(args[0].toLowerCase().substr(PREFIX.length)) || client.commands.get(client.aliases.get(args[0].toLowerCase().substr(PREFIX.length)));
 	if (!command) {
         return;

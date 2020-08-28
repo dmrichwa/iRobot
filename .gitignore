@@ -3,6 +3,8 @@
 config.js
 package-lock.json
 TODO.txt
-/Objects
+Objects/*
 /node_modules
 /.vscode
+
+!Objects/slurs.js.template
