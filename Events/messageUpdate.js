@@ -22,7 +22,7 @@ module.exports = async (client, oldMessage, message) => {
 
 	var embed = embedify("", COLORS.EDIT,
 	[
-		["Old Content", oldMessage.content],
+		["Old Content", oldMessage.content, false, " "],
 		["Channel", message.channel, true],
 		["ID", message.id, true],
 	], ["✏ Edit from " + user_form(message.author) + " (#" + message.author.id + ")", message.author.displayAvatarURL], message.content, "✏ " + dateFormat(message.createdAt, "MEDTIMEDATE"), "", "", Date.now(), "");
