@@ -24,10 +24,6 @@ exports.run = async (client, msg, args) => {
 		msg.channel.send({ embed: embed });
 	}
 	else if (args[1].toLowerCase() === "all") { // every category
-		var embed = embedify("All Commands", CATEGORIES.MISC.color,
-		[
-			
-		], "", "Type **" + PREFIX + "help [command]** to learn more", count_commands() + " " + pluralize("command", "commands", count_commands()), "", "", "", "");
 		var catArray = [];
 		for (var category in CATEGORIES) {
 			catArray.push(CATEGORIES[category]);
@@ -35,6 +31,7 @@ exports.run = async (client, msg, args) => {
 		catArray.sort((a, b) => {
 			return b.cmds.length - a.cmds.length;
 		});
+		let fields = [];
 		for (var category of catArray) {
 			var foundUnhidden = false;
 			for (var command of category.cmds) {
@@ -51,19 +48,16 @@ exports.run = async (client, msg, args) => {
 						cmdStr += "• **" + command.help.name + "**\n";
 					}
 				}
-				embed.addField(catStr, cmdStr, true);
+				fields.push([catStr, cmdStr, true]);
 			}
 		}
+		var embed = embedify("All Commands", CATEGORIES.MISC.color, fields, "", "Type **" + PREFIX + "help [command]** to learn more", count_commands() + " " + pluralize("command", "commands", count_commands()), "", "", "", "");
 		msg.channel.send({ embed: embed });
 	}
 	else if (args[1].toLowerCase() === "hidden") { // hidden commands
 		if (CREATOR_ID.indexOf(msg.author.id) <= -1) {
 			return msg.channel.send("Must be bot creator to view hidden commands.");
 		}
-		var embed = embedify("Hidden Commands", CATEGORIES.MISC.color,
-		[
-			
-		], "", "Type **" + PREFIX + "help [command]** to learn more", count_commands(null, true) + " " + pluralize("command", "commands", count_commands(null, true)), "", "", "", "");
 		var catArray = [];
 		for (var category in CATEGORIES) {
 			catArray.push(CATEGORIES[category]);
@@ -71,6 +65,7 @@ exports.run = async (client, msg, args) => {
 		catArray.sort((a, b) => {
 			return b.cmds.length - a.cmds.length;
 		});
+		let fields = [];
 		for (var category of catArray) {
 			var foundHidden = false;
 			for (var command of category.cmds) {
@@ -87,9 +82,10 @@ exports.run = async (client, msg, args) => {
 						cmdStr += "• **" + command.help.name + "**\n";
 					}
 				}
-				embed.addField(catStr, cmdStr, true);
+				fields.push([catStr, cmdStr, true]);
 			}
 		}
+		var embed = embedify("Hidden Commands", CATEGORIES.MISC.color, fields, "", "Type **" + PREFIX + "help [command]** to learn more", count_commands(null, true) + " " + pluralize("command", "commands", count_commands(null, true)), "", "", "", "");
 		msg.channel.send({ embed: embed });
 	}
 	else { // just one category

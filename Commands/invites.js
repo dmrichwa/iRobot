@@ -3,9 +3,6 @@ const { CATEGORIES } = require("../Utils/constants.js");
 
 exports.run = async (client, msg, args) => {
 	msg.guild.fetchInvites().then(invites => {
-		var embed = embedify("Invites", CATEGORIES.INFO.color,
-		[
-		], "", "", invites.size + " " + pluralize("invite", "invites", invites.size), "", "", "", "");
 		var inviteList = [];
 		for (var obj of invites) {
 			inviteList.push(obj[1]);
@@ -14,10 +11,12 @@ exports.run = async (client, msg, args) => {
 			return b.uses - a.uses;
 		});
 		let field_count = 0;
+		let title = "Invites";
+		let fields = [];
 		for (var invite of inviteList) {
-			// RichEmbeds have a max field count of 25
+			// RichEmbeds have a max field count of 25 (TODO: this should really be done in embedify)
 			if (field_count >= 25) {
-				embed.setTitle("Invites (first 25 shown)");
+				title = "Invites (first 25 shown)";
 				break;
 			}
 			var header = "";
@@ -31,9 +30,10 @@ exports.run = async (client, msg, args) => {
 			content += " uses";
 			content += (invite.maxAge === 0 ? ", never expires" : ", expires after " + invite.maxAge + " seconds");
 			
-			embed.addField(header, content, false);
+			fields.push([header, content, false]);
 			field_count++;
 		}
+		var embed = embedify(title, CATEGORIES.INFO.color, fields, "", "", invites.size + " " + pluralize("invite", "invites", invites.size), "", "", "", "");
 		msg.channel.send({ embed: embed });
 	}).catch(error => {
 		msg.channel.send("Error: " + error.content);

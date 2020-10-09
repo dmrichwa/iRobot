@@ -25,10 +25,7 @@ exports.run = async (client, msg, args) => {
 			noCategoryStr += "\n";
 		}
 	}
-	var embed = embedify("Channel List", CATEGORIES.INFO.color,
-	[
-		
-	], "", noCategoryStr, "", "", "", "", "");
+	let fields = [];
 	for (var category in categories) {
 		category = channels.get(category);
 		var catStr = "**• " + category.name + "**";
@@ -55,8 +52,9 @@ exports.run = async (client, msg, args) => {
 				chanStr += "\n";
 			}
 		}
-		embed.addField(catStr, chanStr + vcStr, true);
+		fields.push([catStr, chanStr + vcStr, true]);
 	}
+	var embed = embedify("Channel List", CATEGORIES.INFO.color, fields, "", noCategoryStr, "", "", "", "", "");
 	msg.channel.send({ embed: embed});
 };
 
