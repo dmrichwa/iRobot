@@ -106,26 +106,30 @@ function embedify(title, color, fields, author = "", desc = "", footer = "", ima
                 separator = "\n";
             }
 
-            // Find index of last separator in first 1024 characters
-            // NB: 2nd argument is index of string for BEGINNING of match
-            // We go 1 past so we can find a separator that's directly after 1024 "real" characters
-            // We always go 1 past because even if the separator is multiple characters long,
-            //  lastIndexOf() will still find it.
-            let new_field_length = field[1].lastIndexOf(separator, 1024);
-
-            // If lastIndexOf() returned -1, we found no separators, so set to length of field
-            if (new_field_length === -1) {
-                new_field_length = field[1].length;
-            }
-
-            // If field length is greater than 1024 and no separators were found in the first 1024 characters,
-            //  we forcefully cut off the field. This means there is nothing to skip over when splitting the field.
-            //  If new_field_length <= 1024 at this point, we used a separator, so we should skip over it when splitting.
-            //  (Or field length <= 1024, so there is no splitting so this is irrelevant)
+            let new_field_length = field[1].length;
             let used_separator = true;
             if (new_field_length > 1024) {
-                new_field_length = 1024;
-                used_separator = false;
+                // Find index of last separator in first 1024 characters
+                // NB: 2nd argument is index of string for BEGINNING of match
+                // We go 1 past so we can find a separator that's directly after 1024 "real" characters
+                // We always go 1 past because even if the separator is multiple characters long,
+                //  lastIndexOf() will still find it.
+                new_field_length = field[1].lastIndexOf(separator, 1024);
+
+                // If lastIndexOf() returned -1, we found no separators, so set to length of field
+                if (new_field_length === -1) {
+                    new_field_length = field[1].length;
+                }
+
+
+                // If field length is greater than 1024 and no separators were found in the first 1024 characters,
+                //  we forcefully cut off the field. This means there is nothing to skip over when splitting the field.
+                //  If new_field_length <= 1024 at this point, we used a separator, so we should skip over it when splitting.
+                //  (Or field length <= 1024, so there is no splitting so this is irrelevant)
+                if (new_field_length > 1024) {
+                    new_field_length = 1024;
+                    used_separator = false;
+                }
             }
 
             // Add the field to the embed object, cutting off at right before the separator
