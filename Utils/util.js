@@ -121,7 +121,6 @@ function embedify(title, color, fields, author = "", desc = "", footer = "", ima
                     new_field_length = field[1].length;
                 }
 
-
                 // If field length is greater than 1024 and no separators were found in the first 1024 characters,
                 //  we forcefully cut off the field. This means there is nothing to skip over when splitting the field.
                 //  If new_field_length <= 1024 at this point, we used a separator, so we should skip over it when splitting.
