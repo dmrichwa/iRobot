@@ -1,6 +1,6 @@
 const { slurs } = require("../Objects/slurs.js");
 const { dateFormat, user_form, embedify } = require(".");
-const { DELETE_EDIT_CHANNELS, COLORS } = require("./constants.js");
+const { DELETE_EDIT_CHANNELS, COLORS, SERV_TYLER } = require("./constants.js");
 
 /**
  * Checks a message for slurs and takes action if it does
@@ -9,6 +9,10 @@ const { DELETE_EDIT_CHANNELS, COLORS } = require("./constants.js");
  * @returns {void}
  */
 function run_slur_checker(client, msg) {
+    // Disable slur checker on Tylersters
+    if (msg.guild && msg.guild.id === SERV_TYLER) {
+        return;
+    }
     let detected_slurs = check_for_slurs(msg);
     if (detected_slurs.length > 0) {
         let converted_slurs = make_safe_slurs(detected_slurs);
