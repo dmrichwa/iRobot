@@ -1,16 +1,15 @@
 {
   "name": "iRobot2",
   "dependencies": {
-    "chalk": "^3.0.0",
-    "dateformat": "*",
-    "discord.js": "^11.6.2",
-    "got": "^10.6.0",
-    "image-average-color": "*",
-    "lastfm": "*",
+    "chalk": "^4.1.0",
+    "dateformat": "^4.5.1",
+    "discord.js": "^11.6.4",
+    "got": "^11.8.2",
+    "image-average-color": "^1.0.0",
+    "lastfm": "^0.9.3",
     "load-json-file": "^6.2.0",
-    "moment": "*",
-    "sqlite": "*",
-    "sqlite3": "^4.1.1",
+    "moment": "^2.29.1",
+    "sqlite": "^4.0.19",
     "write-json-file": "^4.3.0"
   }
 }

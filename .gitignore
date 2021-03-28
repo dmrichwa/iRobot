@@ -1,10 +1,17 @@
+# Shortcuts
 *.lnk
 *.bat
+
+# Secrets
 config.js
-package-lock.json
+
+# Miscellaneous
 TODO.txt
+
+# Objects
 Objects/*
 /node_modules
 /.vscode
 
+# Template files
 !Objects/slurs.js.template
