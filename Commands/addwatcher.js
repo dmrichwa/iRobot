@@ -1,4 +1,4 @@
-const { sql, user_form, invalid_usage } = require("../Utils/");
+const { sql, user_form, invalid_usage, sqlite3 } = require("../Utils/");
 
 exports.run = async (client, msg, args) => {
 	if (args.length < 2) {
@@ -10,7 +10,7 @@ exports.run = async (client, msg, args) => {
 		return msg.channel.send({ embed: invalid_usage(this) });
 	}
 	const abbr = courseParsed[1].toUpperCase(), num = courseParsed[2].toUpperCase(), section = courseParsed[3].toUpperCase();
-	sql.open("./Objects/coursewatcher.sqlite").then(() => {
+	sql.open({filename: "./Objects/coursewatcher.sqlite", driver: sqlite3.Database}).then((db) => {
 		/*
 		msgSect	rowSect	add? (section in message; section in any row; add to table?)
 		y		y		n (already have that section watched)
@@ -26,8 +26,8 @@ exports.run = async (client, msg, args) => {
 		// TODO: if you are watching the entire course but specify adding a section, this will incorrectly add the section!
 		(async () => {
 			// add user ID to list of watchers
-			sql.run("CREATE TABLE IF NOT EXISTS courseWatchUsers (userId TEXT, UNIQUE(userId))").then(() => {
-				sql.run("INSERT OR IGNORE INTO courseWatchUsers (userId) VALUES (?)", [msg.author.id]).then(() => {
+			db.run("CREATE TABLE IF NOT EXISTS courseWatchUsers (userId TEXT, UNIQUE(userId))").then(() => {
+				db.run("INSERT OR IGNORE INTO courseWatchUsers (userId) VALUES (?)", [msg.author.id]).then(() => {
 					console.log("Added " + msg.author.id + " (" + user_form(msg.author) + ") to course watch users table");
 				});
 			});
@@ -37,58 +37,58 @@ exports.run = async (client, msg, args) => {
 			if (section) {
 				sqlQuery += ` AND section = "${section}"`;
 			}
-			sql.get(sqlQuery).then(row => {
+			db.get(sqlQuery).then(row => {
 				if (!row) {
-					sql.run("INSERT INTO courseWatch (userId, abbr, num, section) VALUES (?, ?, ?, ?)", [msg.author.id, abbr, num, section]).then(() => {
+					db.run("INSERT INTO courseWatch (userId, abbr, num, section) VALUES (?, ?, ?, ?)", [msg.author.id, abbr, num, section]).then(() => {
 						if (section) {
 							msg.channel.send("Added " + abbr + num + " " + section + " to your watchlist!");
 						}
 						else {
 							msg.channel.send("Added " + abbr + num + " to your watchlist!");
 						}
-						addwatcher_finally();
+						addwatcher_finally(db);
 					});
 				}
 				else {
 					if (section) { // we are already watching this specific section
 						msg.channel.send("You are already watching " + abbr + num + " " + section + "!");
-						addwatcher_finally();
+						addwatcher_finally(db);
 					}
 					else { // we found a row but did not specify a section
 						if (row.section) { // we want to watch all but are currently only watching a section
 							// delete the current sections being watched
-							sql.run(`DELETE FROM courseWatch WHERE userId ="${msg.author.id}" AND abbr = "${abbr}" AND num = "${num}"`).then(() => {
+							db.run(`DELETE FROM courseWatch WHERE userId ="${msg.author.id}" AND abbr = "${abbr}" AND num = "${num}"`).then(() => {
 								// add all sections to the watchlist
-								sql.run("INSERT INTO courseWatch (userId, abbr, num, section) VALUES (?, ?, ?, ?)", [msg.author.id, abbr, num, section]).then(() => {
+								db.run("INSERT INTO courseWatch (userId, abbr, num, section) VALUES (?, ?, ?, ?)", [msg.author.id, abbr, num, section]).then(() => {
 									msg.channel.send("Added " + abbr + num + " to your watchlist and cleared old watched sections!");
-									addwatcher_finally();
+									addwatcher_finally(db);
 								});
 							});
 						}
 						else { // we want to watch all and are currently already watching all
 							msg.channel.send("You are already watching " + abbr + num + "!");
-							addwatcher_finally();
+							addwatcher_finally(db);
 						}
 					}
 				}
 			}).catch(() => {
 				console.error;
-				sql.run("CREATE TABLE IF NOT EXISTS courseWatch (userId TEXT, abbr TEXT, num TEXT, section TEXT)").then(() => {
-					sql.run("INSERT INTO courseWatch (userId, abbr, num, section) VALUES (?, ?, ?, ?)", [msg.author.id, abbr, num, section]).then(() => {
+				db.run("CREATE TABLE IF NOT EXISTS courseWatch (userId TEXT, abbr TEXT, num TEXT, section TEXT)").then(() => {
+					db.run("INSERT INTO courseWatch (userId, abbr, num, section) VALUES (?, ?, ?, ?)", [msg.author.id, abbr, num, section]).then(() => {
 						if (section) {
 							msg.channel.send("Added " + abbr + num + " " + section + " to your watchlist!");
 						}
 						else {
 							msg.channel.send("Added " + abbr + num + " to your watchlist!");
 						}
-						addwatcher_finally();
+						addwatcher_finally(db);
 					});
 				});
 			});
 		})();
 	});
-	function addwatcher_finally() {
-		sql.close();
+	function addwatcher_finally(db) {
+		db.close();
 	}
 };
 

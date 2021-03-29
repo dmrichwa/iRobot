@@ -1,4 +1,4 @@
-const { sql, embedify, invalid_usage, get_role_array, has_permission, get_role, pluralize, format_role } = require("../Utils/");
+const { sql, embedify, invalid_usage, get_role_array, has_permission, get_role, pluralize, format_role, sqlite3 } = require("../Utils/");
 const { CATEGORIES, COLORS } = require("../Utils/constants.js");
 
 exports.run = async (client, msg, args) => {
@@ -6,7 +6,7 @@ exports.run = async (client, msg, args) => {
 		return msg.channel.send({ embed: invalid_usage(this) });
 	}
 	var embed;
-	sql.open("./Objects/" + msg.guild.id + "_roles.sqlite").then(() => {
+	sql.open({filename: "./Objects/" + msg.guild.id + "_roles.sqlite", driver: sqlite3.Database}).then((db) => {
 		(async () => {
 			const roleList = args.slice(2).join(" ").split("\\"); // get every role and perform operations
 			var convertedRoleList = [];
@@ -41,9 +41,9 @@ exports.run = async (client, msg, args) => {
 					var str = "";
 					for (var role of convertedRoleList) {
 						await new Promise(next => {
-							sql.get(`SELECT * FROM selfroles WHERE roleId ="${role.id}"`).then(row => {
+							db.get(`SELECT * FROM selfroles WHERE roleId ="${role.id}"`).then(row => {
 								if (!row) {
-									sql.run("INSERT INTO selfroles (roleId, v) VALUES (?, ?)", [role.id, 1]).then(() => {
+									db.run("INSERT INTO selfroles (roleId, v) VALUES (?, ?)", [role.id, 1]).then(() => {
 										str += "Role " + format_role(role, false, true) + " added to selfrole list\n";
 										next();
 									});
@@ -54,8 +54,8 @@ exports.run = async (client, msg, args) => {
 								}
 							}).catch(error => {
 								console.log(error);
-								sql.run("CREATE TABLE IF NOT EXISTS selfroles (roleId TEXT, v INTEGER)").then(() => {
-									sql.run("INSERT INTO selfroles (roleId, v) VALUES (?, ?)", [role.id, 1]).then(() => {
+								db.run("CREATE TABLE IF NOT EXISTS selfroles (roleId TEXT, v INTEGER)").then(() => {
+									db.run("INSERT INTO selfroles (roleId, v) VALUES (?, ?)", [role.id, 1]).then(() => {
 										str += "Role '**" + role.name + "**' added to selfrole list\n";
 										next();
 									});
@@ -70,7 +70,7 @@ exports.run = async (client, msg, args) => {
 					[
 						["Success", str]
 					]);
-					selfrole_finally();
+					selfrole_finally(db);
 				}
 			}
 			else if (args[1].toLowerCase() === "remove") { // remove thse role(s) from the list of assignable roles
@@ -79,26 +79,26 @@ exports.run = async (client, msg, args) => {
 					[
 						["Error", "You must have the Ban Members permission to remove from the selfrole list"]
 					]);
-					selfrole_finally();
+					selfrole_finally(db);
 				}
 				else if (convertedRoleList.length === 0 && badRoleList.length === 0) {
 					embed = embedify("", COLORS.ERROR,
 					[
 						["Error", "No roles found"]
 					]);
-					selfrole_finally();
+					selfrole_finally(db);
 				}
 				else {
 					var str = "";
 					for (var role of convertedRoleList) {
 						await new Promise(next => {
-							sql.get(`SELECT * FROM selfroles WHERE roleId ="${role.id}"`).then(row => {
+							db.get(`SELECT * FROM selfroles WHERE roleId ="${role.id}"`).then(row => {
 								if (!row) { // role not in table
 									str += "~~Role " + format_role(role, false, true) + " not in selfrole list~~\n";
 									next();
 								}
 								else { // role ID already exists in table
-									sql.run(`DELETE FROM selfroles WHERE roleId = "${role.id}"`).then(() => {
+									db.run(`DELETE FROM selfroles WHERE roleId = "${role.id}"`).then(() => {
 										str += "Role " + format_role(role, false, true) + " removed from selfrole list\n";
 										next();
 									});
@@ -115,13 +115,13 @@ exports.run = async (client, msg, args) => {
 					[
 						["Success", str]
 					]);
-					selfrole_finally();
+					selfrole_finally(db);
 				}
 			}
 			else if (args[1].toLowerCase() === "list") { // list the assignable roles
 				var roles = [];
 				var staleRoles = []; // deleted roles that should be removed from the table
-				sql.all(`SELECT * FROM selfroles`).then(rows => {
+				db.all(`SELECT * FROM selfroles`).then(rows => {
 					(async () => {
 						for (var row of rows) {
 							await new Promise(next => {
@@ -155,17 +155,17 @@ exports.run = async (client, msg, args) => {
 						[
 							["All Selfroles", str, true]
 						], "", "", roles.length + " " + pluralize("selfrole", "selfroles", roles.length), "", "", "", "");
-						sql.run(`DELETE FROM selfroles WHERE roleId IN (` + staleRoles.join(",") + `)`).then(() => {
+						db.run(`DELETE FROM selfroles WHERE roleId IN (` + staleRoles.join(",") + `)`).then(() => {
 							if (staleRoles.length > 0) {
 								console.log("Roles deleted: " + staleRoles.join(", "));
 							}
-							selfrole_finally();
+							selfrole_finally(db);
 						});
 					})();
 				});
 			}
 			else if (args[1].toLowerCase() === "unlist") { // list the unassignable roles
-				sql.all(`SELECT * FROM selfroles`).then(rows => {
+				db.all(`SELECT * FROM selfroles`).then(rows => {
 					(async () => {
 						var rolesAssign = [];
 						var roles = [];
@@ -196,14 +196,14 @@ exports.run = async (client, msg, args) => {
 						[
 							["All Non-Selfroles", str, true]
 						], "", "", roles.length + " non-" + pluralize("selfrole", "selfroles", roles.length), "", "", "", "");
-						selfrole_finally();
+						selfrole_finally(db);
 					})();
 				});
 			}
 			else { // add/remove the role from the current user
 				get_role(args.slice(1).join(" "), msg.guild).then(role => {
 					var found = false;
-					sql.get(`SELECT * FROM selfroles WHERE roleId ="${role.id}"`).then(row => {
+					db.get(`SELECT * FROM selfroles WHERE roleId ="${role.id}"`).then(row => {
 						if (!row) { // role is not a selfrole
 							found = false;
 						}
@@ -215,7 +215,7 @@ exports.run = async (client, msg, args) => {
 							[
 								["Error", "Role is not self-assignable"]
 							]);
-							selfrole_finally();
+							selfrole_finally(db);
 						}
 						else {
 							if (msg.member.roles.has(role.id)) { // user has role, so remove
@@ -224,7 +224,7 @@ exports.run = async (client, msg, args) => {
 								[
 									["Success", "Role " + format_role(role, false, true) + " removed"]
 								]);
-								selfrole_finally();
+								selfrole_finally(db);
 							}
 							else { // user does not have role, so add
 								msg.member.addRole(role);
@@ -232,7 +232,7 @@ exports.run = async (client, msg, args) => {
 								[
 									["Success", "Role " + format_role(role, false, true) + " added"]
 								]);
-								selfrole_finally();
+								selfrole_finally(db);
 							}
 						}
 					}).catch(error => {
@@ -243,8 +243,8 @@ exports.run = async (client, msg, args) => {
 				})
 			}
 		})();
-		function selfrole_finally() {
-			sql.close();
+		function selfrole_finally(db) {
+			db.close();
 			msg.channel.send({ embed: embed });
 		}
 	});

@@ -1,4 +1,4 @@
-const { sql, invalid_usage } = require("../Utils/");
+const { sql, invalid_usage, sqlite3 } = require("../Utils/");
 
 exports.run = async (client, msg, args) => {
 	if (args.length < 2) {
@@ -11,13 +11,13 @@ exports.run = async (client, msg, args) => {
 	}
 	const abbr = courseParsed[1].toUpperCase(), num = courseParsed[2].toUpperCase(), section = courseParsed[3].toUpperCase();
 	// TODO: Remove user from watcherlist if they have no more courses they are watching!
-	sql.open("./Objects/coursewatcher.sqlite").then(() => {
+	sql.open({filename: "./Objects/coursewatcher.sqlite", driver: sqlite3.Database}).then((db) => {
 		(async () => {
 			var sqlQuery = `SELECT * FROM courseWatch WHERE userId ="${msg.author.id}" AND abbr = "${abbr}" AND num = "${num}"`;
 			if (section) {
 				sqlQuery += ` AND section = "${section}"`;
 			}
-			sql.get(sqlQuery).then(row => {
+			db.get(sqlQuery).then(row => {
 				if (!row) { // we are not already watching this section
 					if (section) {
 						msg.channel.send("You are already not watching " + abbr + num + " " + section + "!");
@@ -25,21 +25,21 @@ exports.run = async (client, msg, args) => {
 					else {
 						msg.channel.send("You are already not watching " + abbr + num + "!");
 					}
-					remwatcher_finally();
+					remwatcher_finally(db);
 				}
 				else {
 					sqlQuery = `DELETE FROM courseWatch WHERE userId ="${msg.author.id}" AND abbr = "${abbr}" AND num = "${num}"`;
 					if (section) {
 						sqlQuery += ` AND section = "${section}"`;
 					}
-					sql.run(sqlQuery).then(() => {
+					db.run(sqlQuery).then(() => {
 						if (section) {
 							msg.channel.send("Removed " + abbr + num + " " + section + " from your watchlist!");
 						}
 						else {
 							msg.channel.send("Removed " + abbr + num + " from your watchlist!");
 						}
-						remwatcher_finally();
+						remwatcher_finally(db);
 					});
 				}
 			}).catch(error => {
@@ -47,8 +47,8 @@ exports.run = async (client, msg, args) => {
 			});
 		})();
 	});
-	function remwatcher_finally() {
-		sql.close();
+	function remwatcher_finally(db) {
+		db.close();
 	}
 };
 

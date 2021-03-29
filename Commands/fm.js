@@ -1,4 +1,4 @@
-const { sql, dateFormat, embedify, get_color_from_URL, rainbow } = require("../Utils/");
+const { sql, dateFormat, embedify, get_color_from_URL, rainbow, sqlite3 } = require("../Utils/");
 const { lastfm } = require("../Objects.js");
 
 exports.run = async (client, msg, args) => {
@@ -6,27 +6,27 @@ exports.run = async (client, msg, args) => {
         if (!args[2]) {
             return msg.channel.send("Please specify a username to set");
         }
-        sql.open("./Objects/lastfm.sqlite").then(() => {
+        sql.open({filename: "./Objects/lastfm.sqlite", driver: sqlite3.Database}).then((db) => {
             (async () => {
-                sql.get(`SELECT * FROM lastfmUsernames WHERE userId ="${msg.author.id}"`).then(row => {
+                db.get(`SELECT * FROM lastfmUsernames WHERE userId ="${msg.author.id}"`).then(row => {
                     if (!row) {
-                        sql.run("INSERT INTO lastfmUsernames (userId, fmName) VALUES (?, ?)", [msg.author.id, args[2]]).then(() => {
+                        db.run("INSERT INTO lastfmUsernames (userId, fmName) VALUES (?, ?)", [msg.author.id, args[2]]).then(() => {
                             msg.channel.send("Set last.fm username to " + args[2]);
-                            fm_finally();
+                            fm_finally(db);
                         });
                     }
                     else { // user already set their username
-                        sql.run("UPDATE lastfmUsernames SET fmName = '" + args[2] + "' WHERE userId = '" + msg.author.id + "'").then(() => {
+                        db.run("UPDATE lastfmUsernames SET fmName = '" + args[2] + "' WHERE userId = '" + msg.author.id + "'").then(() => {
                             msg.channel.send("Updated last.fm username to " + args[2]);
-                            fm_finally();
+                            fm_finally(db);
                         });
                     }
                 }).catch(error => {
                     console.log(error);
-                    sql.run("CREATE TABLE IF NOT EXISTS lastfmUsernames (userId TEXT, fmName TEXT)").then(() => {
-                        sql.run("INSERT INTO lastfmUsernames (userId, fmName) VALUES (?, ?)", [msg.author.id, args[2]]).then(() => {
+                    db.run("CREATE TABLE IF NOT EXISTS lastfmUsernames (userId TEXT, fmName TEXT)").then(() => {
+                        db.run("INSERT INTO lastfmUsernames (userId, fmName) VALUES (?, ?)", [msg.author.id, args[2]]).then(() => {
                             msg.channel.send("Set last.fm username to " + args[2]);
-                            fm_finally();
+                            fm_finally(db);
                         });
                     });
                 });
@@ -35,15 +35,15 @@ exports.run = async (client, msg, args) => {
     }
     else { // get currently playing song
         if (args.length === 1) { // no name specified -- use lookup
-            sql.open("./Objects/lastfm.sqlite").then(() => {
+            sql.open({filename: "./Objects/lastfm.sqlite", driver: sqlite3.Database}).then((db) => {
                 (async () => {
-                    sql.get(`SELECT * FROM lastfmUsernames WHERE userId ="${msg.author.id}"`).then(row => {
+                    db.get(`SELECT * FROM lastfmUsernames WHERE userId ="${msg.author.id}"`).then(row => {
                         if (!row) { // username not found
                             msg.channel.send("Please set a username using !fm set (name)");
-                            fm_finally();
+                            fm_finally(db);
                         }
                         else {
-                            fm_handle(row.fmName).then(() => fm_finally());
+                            fm_handle(row.fmName).then(() => fm_finally(db));
                         }
                     });
                 })();
@@ -102,8 +102,8 @@ exports.run = async (client, msg, args) => {
             });
         }
     }
-    function fm_finally() {
-        sql.close();
+    function fm_finally(db) {
+        db.close();
     }
 };
 

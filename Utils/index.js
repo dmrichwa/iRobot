@@ -9,6 +9,7 @@ dateFormat.masks.FILE = "yyyy-mm-dd HH:MM:ss";
 module.exports = {
 	Discord: require("discord.js"),
 	sql: require("sqlite"),
+	sqlite3: require("sqlite3"),
 	fs: require("fs"),
 	LastFmNode: require("lastfm").LastFmNode,
 	average: require("image-average-color"),

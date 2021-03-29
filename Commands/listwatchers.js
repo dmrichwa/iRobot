@@ -1,11 +1,11 @@
-const { sql } = require("../Utils/");
+const { sql, sqlite3 } = require("../Utils/");
 
 exports.run = async (client, msg, args) => {
 	const safe = args[1] && args[1].toLowerCase() === "safe";
-	sql.open("./Objects/coursewatcher.sqlite").then(() => {
+	sql.open({filename: "./Objects/coursewatcher.sqlite", driver: sqlite3.Database}).then((db) => {
 		(async () => {
 			var str = "";
-			sql.all(`SELECT * FROM courseWatch WHERE userId ="${msg.author.id}"`).then(rows => {
+			db.all(`SELECT * FROM courseWatch WHERE userId ="${msg.author.id}"`).then(rows => {
 				for (var row of rows) {
 					if (row.section) {
 						if (safe) {
@@ -31,12 +31,12 @@ exports.run = async (client, msg, args) => {
 				console.log(error);
 			}).then(() => {
 				msg.channel.send(str);
-				listwatcher_finally();
+				listwatcher_finally(db);
 			});
 		})();
 	});
-	function listwatcher_finally() {
-		sql.close();
+	function listwatcher_finally(db) {
+		db.close();
 	}
 };
 
