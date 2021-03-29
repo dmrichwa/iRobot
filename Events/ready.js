@@ -1,4 +1,4 @@
-const { sql, got, dateFormat, writeJsonFile, user_form, get_user } = require("../Utils/");
+const { sql, got, dateFormat, writeJsonFile, user_form, get_user, sqlite3 } = require("../Utils/");
 const { getReminders } = require("../Objects.js");
 
 module.exports = async (client, msg) => {
@@ -48,12 +48,12 @@ function spawn_timers(client) {
 
 	// course watcher
 	function course_watcher() {
-		sql.open("./Objects/coursewatcher.sqlite").then(() => {
+		sql.open({filename: "./Objects/coursewatcher.sqlite", driver: sqlite3.Database}).then((db) => {
 			(async () => {
-				sql.all(`SELECT * FROM courseWatchUsers`).then(userRows => {
+				db.all(`SELECT * FROM courseWatchUsers`).then(userRows => {
 					for (var userRow of userRows) {
 						console.log("Going through course watchlist for " + userRow.userId);
-						sql.all(`SELECT * FROM courseWatch WHERE userId ="${userRow.userId}"`).then(rows => {
+						db.all(`SELECT * FROM courseWatch WHERE userId ="${userRow.userId}"`).then(rows => {
 							(async () => {
 								var classList = [];
 								var skipList = [];
