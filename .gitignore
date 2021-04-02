@@ -5,9 +5,6 @@
 # Secrets
 config.js
 
-# Miscellaneous
-TODO.txt
-
 # Objects
 Objects/*
 /node_modules
