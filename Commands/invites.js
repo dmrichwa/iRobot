@@ -29,6 +29,7 @@ exports.run = async (client, msg, args) => {
 			content += (invite.maxUses === 0 ? "" : " / " + invite.maxUses);
 			content += " uses";
 			content += (invite.maxAge === 0 ? ", never expires" : ", expires after " + invite.maxAge + " seconds");
+			content += (invite.temporary ? ", temporary membership" : "");
 			
 			fields.push([header, content, false]);
 			field_count++;
