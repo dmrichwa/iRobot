@@ -42,7 +42,7 @@ class Command
             }
             catch (e) {
                 console.log(e);
-                message.channel.send("[Exception] " + e.name + ": " + e.message, {disableEveryone: true, split: true});
+                message.channel.send("[Exception] " + e.name + ": " + e.message, {disableMentions: 'everyone', split: true});
             }
         })().then(() => {
                 message.channel.stopTyping();
