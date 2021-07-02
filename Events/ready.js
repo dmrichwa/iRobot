@@ -90,7 +90,7 @@ function spawn_timers(client) {
 									});
 								}
 								if (thisUser !== "" && classList.length !== 0) { // TODO: users with no more watchers should be removed from the JSON file
-									client.fetchUser(thisUser).then(user => {
+									client.users.fetch(thisUser).then(user => {
 										console.log("Sending course watchlist to " + user_form(user));
 										var date = new Date();
 										var month = date.getMonth() + 1;

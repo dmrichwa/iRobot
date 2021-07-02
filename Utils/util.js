@@ -415,7 +415,7 @@ function get_user(input, guild = "", defaultUser = "")
             return resolve(fuzzy); // we have only one fuzzy match, so we can safely assume this is the user they want
         }
         // we could not find the user in our database, so try to fetch by ID
-        client.fetchUser(input).then((user) => {
+        client.users.fetch(input).then((user) => {
             return resolve(user);
         }).catch((error) => {
             return reject(new Error("Could not find user `" + input + "` (no matches)"));
