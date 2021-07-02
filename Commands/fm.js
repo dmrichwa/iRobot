@@ -87,7 +87,7 @@ exports.run = async (client, msg, args) => {
                                 ["Track", track.name ? track.name : "No Name", true],
                                 ["Album", track.album ? track.album : "No Album", true],
                                 ["Artist", track.artist ? track.artist : "No Artist", true],
-                            ], ["Last track for " + username, client.user.displayAvatarURL, "http://last.fm/user/" + username], trackDate, scrobbleCount.toLocaleString() + " scrobbles" + (didError ? " • Failed to load track image" : ""), "", track.image, "", "");
+                            ], ["Last track for " + username, client.user.displayAvatarURL(), "http://last.fm/user/" + username], trackDate, scrobbleCount.toLocaleString() + " scrobbles" + (didError ? " • Failed to load track image" : ""), "", track.image, "", "");
                             msg.channel.send({ embed: embed });
                         }
                         catch (error) {
