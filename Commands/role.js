@@ -143,7 +143,7 @@ exports.run = async (client, msg, args) => {
 							}
 						}
 
-						roles.sort((a, b) => b.calculatedPosition - a.calculatedPosition);
+						roles.sort((a, b) => b.position - a.position);
 						var str = "";
 						for (var role of roles) {
 							str += format_role(role, args.length >= 3 && args[2].toLowerCase() === "id", true) + "\n";
