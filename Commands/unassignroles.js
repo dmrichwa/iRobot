@@ -4,11 +4,11 @@ const { CREATOR_ID } = require("../Utils/constants.js");
 exports.run = async (client, msg, args) => {
 	if (CREATOR_ID.indexOf(msg.author.id) <= -1) // only bot creator may run this command
 		return;
-	msg.guild.fetchMembers().then(guild => {
+	msg.guild.members.fetch().then(members => {
 		(async () => {
 			var str = "Users: ";
 			var count = 0;
-			for (var member of guild.members) {
+			for (var member of members) {
 				await new Promise(next => {
 					member = member[1];
 					if (member.roles.has(args[1])) {

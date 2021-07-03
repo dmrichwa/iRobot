@@ -62,7 +62,7 @@ exports.run = async (client, msg, args) => {
 
 	embed = embedify(title, (msg.guild.owner.displayColor ? msg.guild.owner.displayHexColor : "#000000"),
 	[
-	], "", str, "", "", msg.guild.iconURL, "", "");
+	], "", str, "", "", msg.guild.iconURL(), "", "");
 	msg.channel.send({ embed: embed });
 };
 

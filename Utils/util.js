@@ -255,7 +255,7 @@ exports.count_commands = count_commands;
 function get_role_array(guild)
 {
     return guild.roles.array().filter(function(role) {
-        return role !== guild.defaultRole;
+        return role !== guild.roles.everyone;
     }).sort((a, b) => {
         if (a.name.toLowerCase() < b.name.toLowerCase())
             return -1;
