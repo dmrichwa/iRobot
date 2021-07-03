@@ -391,7 +391,7 @@ function get_user(input, guild = "", defaultUser = "")
             return false;
         }
         if (guild) {
-            for (var member of guild.members) { // first search through only the guild, if given
+            for (var member of guild.members.cache) { // first search through only the guild, if given
                 if (get_user_lookthru(member[1].user)) { // [userid, member object]
                     return;
                 }
@@ -450,7 +450,7 @@ function get_member(input, guild, defaultMember = "")
                 return reject(new Error("Please provide a member"));
             }
         }
-        for (var member of guild.members) {
+        for (var member of guild.members.cache) {
             member = member[1]; // [userId, member object]
 			var username = member.user.username.toLowerCase(); // sanitized username
 			var nickname = (member.nickname || "").toLowerCase(); // sanitized nickname
