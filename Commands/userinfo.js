@@ -34,7 +34,7 @@ exports.run = async (client, msg, args) => {
 		if (member.nickname) {
 			str += "📛 **Nickname**: " + member.nickname + "\n"
 		}
-		str += "🌈 **Color**: " + (member.colorRole ? member.displayHexColor : "None") + "\n"
+		str += "🌈 **Color**: " + (member.roles.color ? member.displayHexColor : "None") + "\n"
 		str += "🌐 **Discord Join Date**: " + dateFormat(member.user.createdAt, "MEDTIMEDATE") + "\n"
 		str += "📆 **Server Join Date**: " + dateFormat(member.joinedAt, "MEDTIMEDATE") + "\n"
 		if (doFull) {
@@ -43,7 +43,7 @@ exports.run = async (client, msg, args) => {
 		else {
 			str += "🛡 **Roles**: " + (member.roles.size - 1) + "\n"
 		}
-		var embed = embedify("[" + status + "] " + user_form(member) + (member.user.bot ? " 🤖" : ""), (member.colorRole ? member.displayHexColor : CATEGORIES.INFO.color),
+		var embed = embedify("[" + status + "] " + user_form(member) + (member.user.bot ? " 🤖" : ""), (member.roles.color ? member.displayHexColor : CATEGORIES.INFO.color),
 		[
 		], "", str, "", "", member.user.displayAvatarURL, "", "");
 		msg.channel.send({ embed: embed});

@@ -14,7 +14,7 @@ exports.run = async (client, msg, args) => {
 					if (member.roles.has(args[1])) {
 						str += member.toString();
 						count++;
-						member.removeRole(args[1], "Unassigned role by " + user_form(msg.author)).then(next()).catch(e => {msg.channel.send("Error: " + e);next();});
+						member.roles.remove(args[1], "Unassigned role by " + user_form(msg.author)).then(next()).catch(e => {msg.channel.send("Error: " + e);next();});
 					}
 					else { // skip over
 						next();

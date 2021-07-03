@@ -219,7 +219,7 @@ exports.run = async (client, msg, args) => {
 						}
 						else {
 							if (msg.member.roles.has(role.id)) { // user has role, so remove
-								msg.member.removeRole(role);
+								msg.member.roles.remove(role);
 								embed = embedify("", CATEGORIES.MISC.color,
 								[
 									["Success", "Role " + format_role(role, false, true) + " removed"]
@@ -227,7 +227,7 @@ exports.run = async (client, msg, args) => {
 								selfrole_finally(db);
 							}
 							else { // user does not have role, so add
-								msg.member.addRole(role);
+								msg.member.roles.add(role);
 								embed = embedify("", CATEGORIES.MISC.color,
 								[
 									["Success", "Role " + format_role(role, false, true) + " added"]

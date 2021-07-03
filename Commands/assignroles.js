@@ -16,7 +16,7 @@ exports.run = async (client, msg, args) => {
 						if (member.roles.size === 1) { // everyone has @everyone
 							str += member.toString();
 							count++;
-							member.addRole(role, "Assigned role by " + user_form(msg.author)).then(next()).catch(e => {msg.channel.send("Error: " + e);next();});
+							member.roles.add(role, "Assigned role by " + user_form(msg.author)).then(next()).catch(e => {msg.channel.send("Error: " + e);next();});
 						}
 						else { // skip over
 							next();

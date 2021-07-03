@@ -14,11 +14,11 @@ exports.run = async (client, msg, args) => {
 		}
 		var embed;
 		if (member.roles.has(ROLE_UB_MUTE)) {
-			member.removeRole(ROLE_UB_MUTE, "Mute removed by " + user_form(msg.author));
+			member.roles.remove(ROLE_UB_MUTE, "Mute removed by " + user_form(msg.author));
 			embed = embedify("", CATEGORIES.STAFF.color, [ ], "", member.toString() + " unmuted", "", "", "", "", "");
 		}
 		else {
-			member.addRole(ROLE_UB_MUTE, "Mute added by " + user_form(msg.author));
+			member.roles.add(ROLE_UB_MUTE, "Mute added by " + user_form(msg.author));
 			embed = embedify("", CATEGORIES.STAFF.color, [ ], "", member.toString() + " muted", "", "", "", "", "");
 		}
 		msg.channel.send({ embed: embed });
