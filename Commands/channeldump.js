@@ -9,7 +9,7 @@ exports.run = async (client, msg, args) => {
 			return msg.channel.send({ embed: invalid_usage(this) });
 		}
 		const guild = (args[3] ? client.guilds.get(args[3]) : msg.guild); // guildId is 3rd arg or this guild if not provided
-		const channel = guild.channels.get(args[1]);
+		const channel = guild.channels.cache.get(args[1]);
 		if (!channel) { // could not find channel
 			return msg.channel.send({ embed: invalid_usage(this) });
 		}

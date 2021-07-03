@@ -3,7 +3,7 @@ const { CATEGORIES } = require("../Utils/constants.js");
 
 exports.run = async (client, msg, args) => {
 	const doId = (args[1] ? (args[1].toLowerCase() === "id") : false);
-	const channels = msg.guild.channels.sort((a, b) => { // sort by position in channel list
+	const channels = msg.guild.channels.cache.sort((a, b) => { // sort by position in channel list
 		return a.position - b.position;
 	});
 	var noCategoryStr = "";	

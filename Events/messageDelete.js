@@ -33,5 +33,5 @@ module.exports = async (client, message) => {
 		["Channel", message.channel, true],
 		["ID", message.id, true],
 	], ["❌ Deletion from " + user_form(message.author) + " (#" + message.author.id + ")", message.author.displayAvatarURL()], msgContent, "✏ " + dateFormat(message.createdAt, "MEDTIMEDATE") + imageCountStr, "", "", Date.now(), "");
-	client.channels.get(channel).send({ embed: embed });
+	client.channels.cache.get(channel).send({ embed: embed });
 };

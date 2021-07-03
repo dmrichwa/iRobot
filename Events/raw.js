@@ -11,7 +11,7 @@ module.exports = async (client, event) => {
 
     const { d: data } = event;
     const user = client.users.get(data.user_id);
-    const channel = client.channels.get(data.channel_id) || await user.createDM();
+    const channel = client.channels.cache.get(data.channel_id) || await user.createDM();
 
     // if the message is already in the cache, don't re-emit the event
     if (channel.messages.has(data.message_id)) return;

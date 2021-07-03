@@ -565,7 +565,7 @@ function get_channel(input, guild)
             }
             return false;
         }
-		for (var channel of guild.channels) { // first look through just text channels
+		for (var channel of guild.channels.cache) { // first look through just text channels
 			if (channel[1].type !== "text") {
 				continue;
 			}
@@ -579,7 +579,7 @@ function get_channel(input, guild)
 		if (fuzzy) {
 			return resolve(fuzzy); // we have only one fuzzy match, so we can safely assume this is the channel they want
 		}
-		for (var channel of guild.channels) { // then look through the other types of channels (voice, category)
+		for (var channel of guild.channels.cache) { // then look through the other types of channels (voice, category)
 			if (get_channel_lookthru(channel[1])) {
 				return;
 			}

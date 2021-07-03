@@ -5,7 +5,7 @@ exports.run = async (client, msg, args) => {
 		return msg.channel.send({ embed: invalid_usage(this) });
 	}
 	const messageId = args[1];
-	const channel = (args.length >= 3 ? msg.guild.channels.get(args[2]) : msg.channel);
+	const channel = (args.length >= 3 ? msg.guild.channels.cache.get(args[2]) : msg.channel);
 	if (!channel) { // could not find channel
 		return msg.channel.send("Could not find channel");
 	}

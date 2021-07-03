@@ -12,5 +12,5 @@ module.exports = async (client, member) => {
 		["Name", user_form(member), true],
 		["ID", member.id, true],
 	], ["👋 Member Left", member.user.displayAvatarURL()], member.toString(), "", "", "", Date.now(), "");
-    client.channels.get(channel).send({ embed: embed });
+    client.channels.cache.get(channel).send({ embed: embed });
 };

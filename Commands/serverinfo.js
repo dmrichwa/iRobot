@@ -2,7 +2,7 @@ const { dateFormat, embedify, get_role_array, boolean_to_yesno } = require("../U
 
 exports.run = async (client, msg, args) => {
 	const doFull = args[1] && args[1].toLowerCase() === "full";
-	const channels = msg.guild.channels.array();
+	const channels = msg.guild.channels.cache.array();
 	const emojis = msg.guild.emojis.array();
 	const members = msg.guild.members.array();
 	const roles = get_role_array(msg.guild);

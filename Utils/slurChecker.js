@@ -68,7 +68,7 @@ function send_slur_embed(client, msg) {
 		["Channel", msg.channel, true],
 		["Message ID", msg.id, true],
 	], ["🤬 Slurs used by " + user_form(msg.author) + " (#" + msg.author.id + ")", msg.author.displayAvatarURL()], msg.content, "", "", "", Date.now(), "");
-	client.channels.get(channel).send({ embed: embed });
+	client.channels.cache.get(channel).send({ embed: embed });
 }
 
 /**
