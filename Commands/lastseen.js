@@ -8,7 +8,7 @@ exports.run = async (client, msg, args) => {
 	{
 		await new Promise(next =>
 		{
-			channel.fetchMessages( { limit: 1, around: messageId } ).then(messages =>
+			channel.messages.fetch( { limit: 1, around: messageId } ).then(messages =>
 			{
 				if (messages.get(messageId))
 				{

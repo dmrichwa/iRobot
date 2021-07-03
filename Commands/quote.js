@@ -14,7 +14,7 @@ exports.run = async (client, msg, args) => {
 	}
 	(async () => {
 		await new Promise(next => {
-			channel.fetchMessages({ limit: 1, around: messageId }).then(messages => {
+			channel.messages.fetch({ limit: 1, around: messageId }).then(messages => {
 				if (messages.get(messageId)) {
 					const message = messages.get(messageId);
 					//TODO: once updated to discord.js v11.4, this can just be msg.url()

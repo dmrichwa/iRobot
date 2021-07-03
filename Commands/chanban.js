@@ -14,7 +14,7 @@ exports.run = async (client, msg, args) => {
 			if (has_permission(["KICK_MEMBERS"], member)) {
 				return msg.channel.send("Cannot chanban someone with the kick members permission");
 			}
-			channel.overwritePermissions(member, { SEND_MESSAGES: false, VIEW_CHANNEL: false, ADD_REACTIONS: false }, msg.content).then(() => {
+			channel.createOverwrite(member, { SEND_MESSAGES: false, VIEW_CHANNEL: false, ADD_REACTIONS: false }, msg.content).then(() => {
 				var embed = embedify("", CATEGORIES.STAFF.color,
 				[
 				], "", member.toString() + " banned from " + channel.toString(), "", "", "", "", "");

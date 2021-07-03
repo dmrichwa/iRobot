@@ -20,7 +20,7 @@ exports.run = async (client, msg, args) => {
 			var count = 0;
 			while (amount > 0) {
 				await new Promise(next => {
-					channel.fetchMessages({ limit: 100, before: beforeMsg }).then(messages => {
+					channel.messages.fetch({ limit: 100, before: beforeMsg }).then(messages => {
 						console.log("Dumping; " + amount + " left to go");
 						amount -= 100; // subtract 100 from messages remaining
 						for (var message of messages) {
