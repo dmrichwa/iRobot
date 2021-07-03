@@ -20,7 +20,7 @@ exports.run = async (client, msg, args) => {
 			});
 			var str = "";
 			for (var warning of warnList) {
-				str += "**" + dateFormat(warning.time, "MEDTIMEDATE") + "** by " + client.users.get(warning.warner) +  "\n" + warning.msg + "\n";
+				str += "**" + dateFormat(warning.time, "MEDTIMEDATE") + "** by " + client.users.cache.get(warning.warner) +  "\n" + warning.msg + "\n";
 			}
 			var embed = embedify("", rainbow(25, Math.random() * 25),
 			[
