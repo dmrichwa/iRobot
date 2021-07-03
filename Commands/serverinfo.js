@@ -4,7 +4,7 @@ exports.run = async (client, msg, args) => {
 	const doFull = args[1] && args[1].toLowerCase() === "full";
 	const channels = msg.guild.channels.cache.array();
 	const emojis = msg.guild.emojis.array();
-	const members = msg.guild.members.array();
+	const members = msg.guild.members.cache.array();
 	const roles = get_role_array(msg.guild);
 
 	var textChannels = [], voiceChannels = [], categories = [];
