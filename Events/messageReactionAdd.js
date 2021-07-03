@@ -169,10 +169,10 @@ module.exports = async (client, reaction, user) => {
 
 					function tictactoe_victory(boardPos) {
 						if (game.board[boardPos] === "🇽") { // creator won
-							descString += client.users.get(game.creator).toString() + " won!";
+							descString += client.users.cache.get(game.creator).toString() + " won!";
 						}
 						else { // opponent won
-							descString += client.users.get(game.opponent).toString() + " won!";
+							descString += client.users.cache.get(game.opponent).toString() + " won!";
 						}
 						game.gameOver = true;
 					}
@@ -190,7 +190,7 @@ module.exports = async (client, reaction, user) => {
 							game.gameOver = true;
 						}
 						else {
-							descString += "It's " + client.users.get(game.turn).toString() + "'s turn! You're " + nextTile;
+							descString += "It's " + client.users.cache.get(game.turn).toString() + "'s turn! You're " + nextTile;
 						}
 					}
 
