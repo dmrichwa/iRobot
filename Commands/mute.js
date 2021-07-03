@@ -13,7 +13,7 @@ exports.run = async (client, msg, args) => {
 			return msg.channel.send("You cannot mute someone with the Kick Members permission");
 		}
 		var embed;
-		if (member.roles.has(ROLE_UB_MUTE)) {
+		if (member.roles.cache.has(ROLE_UB_MUTE)) {
 			member.roles.remove(ROLE_UB_MUTE, "Mute removed by " + user_form(msg.author));
 			embed = embedify("", CATEGORIES.STAFF.color, [ ], "", member.toString() + " unmuted", "", "", "", "", "");
 		}

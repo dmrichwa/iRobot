@@ -5,7 +5,7 @@ exports.run = async (client, msg, args) => {
 	get_role(args.splice(1).join(" ").toLowerCase(), msg.guild).then(role => {
 		var memArr = [];
 		for (var member of msg.guild.members.cache) {
-			if (member[1].roles.has(role.id)) {
+			if (member[1].roles.cache.has(role.id)) {
 				memArr.push(member[1]);
 			}
 		}

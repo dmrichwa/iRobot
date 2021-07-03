@@ -13,7 +13,7 @@ exports.run = async (client, msg, args) => {
 				for (var member of members) {
 					await new Promise(next => {
 						member = member[1];
-						if (member.roles.size === 1) { // everyone has @everyone
+						if (member.roles.cache.size === 1) { // everyone has @everyone
 							str += member.toString();
 							count++;
 							member.roles.add(role, "Assigned role by " + user_form(msg.author)).then(next()).catch(e => {msg.channel.send("Error: " + e);next();});

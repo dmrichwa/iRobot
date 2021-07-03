@@ -38,10 +38,10 @@ exports.run = async (client, msg, args) => {
 		str += "🌐 **Discord Join Date**: " + dateFormat(member.user.createdAt, "MEDTIMEDATE") + "\n"
 		str += "📆 **Server Join Date**: " + dateFormat(member.joinedAt, "MEDTIMEDATE") + "\n"
 		if (doFull) {
-			str += "🛡 **Roles (" + (member.roles.size - 1) + ")**: " + member.roles.array().filter(r => r !== msg.guild.roles.everyone).sort((a, b) => { return b.position - a.position }).join(", ") + "\n"
+			str += "🛡 **Roles (" + (member.roles.cache.size - 1) + ")**: " + member.roles.cache.filter(r => r !== msg.guild.roles.everyone).sort((a, b) => { return b.position - a.position }).array().join(", ") + "\n"
 		}
 		else {
-			str += "🛡 **Roles**: " + (member.roles.size - 1) + "\n"
+			str += "🛡 **Roles**: " + (member.roles.cache.size - 1) + "\n"
 		}
 		var embed = embedify("[" + status + "] " + user_form(member) + (member.user.bot ? " 🤖" : ""), (member.roles.color ? member.displayHexColor : CATEGORIES.INFO.color),
 		[

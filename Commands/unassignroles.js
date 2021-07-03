@@ -11,7 +11,7 @@ exports.run = async (client, msg, args) => {
 			for (var member of members) {
 				await new Promise(next => {
 					member = member[1];
-					if (member.roles.has(args[1])) {
+					if (member.roles.cache.has(args[1])) {
 						str += member.toString();
 						count++;
 						member.roles.remove(args[1], "Unassigned role by " + user_form(msg.author)).then(next()).catch(e => {msg.channel.send("Error: " + e);next();});

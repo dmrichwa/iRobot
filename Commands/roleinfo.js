@@ -3,7 +3,7 @@ const { CATEGORIES } = require("../Utils/constants.js");
 
 exports.run = async (client, msg, args) => {
 	var highRole;
-	msg.guild.roles.forEach(role => {
+	msg.guild.roles.cache.each(role => {
 		if (!highRole || role.position > highRole.position) {
 			highRole = role;
 		}

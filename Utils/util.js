@@ -254,9 +254,9 @@ exports.count_commands = count_commands;
  */
 function get_role_array(guild)
 {
-    return guild.roles.array().filter(function(role) {
+    return guild.roles.cache.filter(function(role) {
         return role !== guild.roles.everyone;
-    }).sort((a, b) => {
+    }).array().sort((a, b) => {
         if (a.name.toLowerCase() < b.name.toLowerCase())
             return -1;
         else if (b.name.toLowerCase() < a.name.toLowerCase())
