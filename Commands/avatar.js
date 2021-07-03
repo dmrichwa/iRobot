@@ -2,7 +2,7 @@ const { get_member } = require("../utils/");
 
 exports.run = async (client, msg, args) => {
     get_member(args.splice(1).join(" "), msg.guild, msg.member).then(member => { // try to find the user they want
-        msg.channel.send("`" + member.user.username + "`'s avatar: " + member.user.displayAvatarURL);
+        msg.channel.send("`" + member.user.username + "`'s avatar: " + member.user.displayAvatarURL());
     }).catch(error => { // could not find user
         msg.channel.send("Error: " + error.message);
     })

@@ -45,7 +45,7 @@ exports.run = async (client, msg, args) => {
 		}
 		var embed = embedify("[" + status + "] " + user_form(member) + (member.user.bot ? " 🤖" : ""), (member.roles.color ? member.displayHexColor : CATEGORIES.INFO.color),
 		[
-		], "", str, "", "", member.user.displayAvatarURL, "", "");
+		], "", str, "", "", member.user.displayAvatarURL(), "", "");
 		msg.channel.send({ embed: embed});
 	}).catch(error => {
 		msg.channel.send("Error: " + error.message);

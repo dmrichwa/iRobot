@@ -35,7 +35,7 @@ module.exports = async (client, reaction, user) => {
 			}
 			var embed = embedify("", rainbow(25, Math.random() * 25),
 			[
-			], [reaction.message.author.username, reaction.message.author.avatarURL], reaction.message.content, dateFormat(reaction.message.createdAt, "MEDTIMEDATE") + " in #" + reaction.message.channel.name, (attachType === "image" ? "attachment://" + attachName : ""), "", "", "", {attachment: attachURL, name: attachName});
+			], [reaction.message.author.username, reaction.message.author.avatarURL()], reaction.message.content, dateFormat(reaction.message.createdAt, "MEDTIMEDATE") + " in #" + reaction.message.channel.name, (attachType === "image" ? "attachment://" + attachName : ""), "", "", "", {attachment: attachURL, name: attachName});
 			reaction.message.guild.channels.get(CHAN_TYLER_HALLOFLAME).send({ embed: embed }).catch(error => {
 				reaction.message.channel.send("Error " + error.code + ": " + error.message);
 				console.log(error);

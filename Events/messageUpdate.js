@@ -25,6 +25,6 @@ module.exports = async (client, oldMessage, message) => {
 		["Old Content", oldMessage.content, false, " "],
 		["Channel", message.channel, true],
 		["ID", message.id, true],
-	], ["✏ Edit from " + user_form(message.author) + " (#" + message.author.id + ")", message.author.displayAvatarURL], message.content, "✏ " + dateFormat(message.createdAt, "MEDTIMEDATE"), "", "", Date.now(), "");
+	], ["✏ Edit from " + user_form(message.author) + " (#" + message.author.id + ")", message.author.displayAvatarURL()], message.content, "✏ " + dateFormat(message.createdAt, "MEDTIMEDATE"), "", "", Date.now(), "");
 	client.channels.get(channel).send({ embed: embed });
 };

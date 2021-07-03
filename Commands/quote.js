@@ -21,7 +21,7 @@ exports.run = async (client, msg, args) => {
 					const jumpToLink = "https://discordapp.com/channels/" + message.guild.id + "/" + message.channel.id + "/" + message.id;
 					let embed = embedify("", (message.member ? message.member.displayHexColor : rainbow(25 * Math.random(25))),
 					[
-					], [message.author.username, message.author.avatarURL], message.content + "\n\n[Jump to message](" + jumpToLink + ")", dateFormat(message.createdAt, "MEDTIMEDATE") + " in #" + channel.name, "", "", "", "");
+					], [message.author.username, message.author.avatarURL()], message.content + "\n\n[Jump to message](" + jumpToLink + ")", dateFormat(message.createdAt, "MEDTIMEDATE") + " in #" + channel.name, "", "", "", "");
 					msg.channel.send({ embed: embed });
 				}
 				else {
