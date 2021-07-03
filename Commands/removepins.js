@@ -5,7 +5,7 @@ exports.run = async (client, msg, args) => {
 	if (CREATOR_ID.indexOf(msg.author.id) <= -1) {
 		return msg.channel.send("Must be bot creator to use this command.");
 	}
-	msg.channel.fetchPinnedMessages().then(messages => {
+	msg.channel.messages.fetchPinned().then(messages => {
 		(async () => {
 			let count = 0;
 			for (let message of messages) {
