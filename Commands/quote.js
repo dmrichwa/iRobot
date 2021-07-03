@@ -17,11 +17,9 @@ exports.run = async (client, msg, args) => {
 			channel.messages.fetch({ limit: 1, around: messageId }).then(messages => {
 				if (messages.get(messageId)) {
 					const message = messages.get(messageId);
-					//TODO: once updated to discord.js v11.4, this can just be msg.url()
-					const jumpToLink = "https://discordapp.com/channels/" + message.guild.id + "/" + message.channel.id + "/" + message.id;
 					let embed = embedify("", (message.member ? message.member.displayHexColor : rainbow(25 * Math.random(25))),
 					[
-					], [message.author.username, message.author.avatarURL()], message.content + "\n\n[Jump to message](" + jumpToLink + ")", dateFormat(message.createdAt, "MEDTIMEDATE") + " in #" + channel.name, "", "", "", "");
+					], [message.author.username, message.author.avatarURL()], message.content + "\n\n[Jump to message](" + message.url + ")", dateFormat(message.createdAt, "MEDTIMEDATE") + " in #" + channel.name, "", "", "", "");
 					msg.channel.send({ embed: embed });
 				}
 				else {
