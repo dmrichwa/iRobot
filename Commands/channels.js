@@ -3,58 +3,54 @@ const { CATEGORIES } = require("../Utils/constants.js");
 
 exports.run = async (client, msg, args) => {
 	const doId = (args[1] ? (args[1].toLowerCase() === "id") : false);
-	const channels = msg.guild.channels.cache.sort((a, b) => { // sort by position in channel list
+	const channels = msg.guild.channels.cache;
+
+	// Create string for channels with no category
+	let noCategoryStr = channels.filter(channel => channel.type !== 'category' && !channel.parent).sort((a, b) => {
+		return a.position - b.position;
+	}).reduce((acc, cur) => {
+		acc += cur.toString();
+		if (doId) {
+			acc += " (`" + cur.id + "`)";
+		}
+		acc += "\n";
+		return acc;
+	}, "");
+
+	// Create sorted list of category channels
+	let categories = channels.filter(channel => channel.type === 'category').sort((a, b) => {
 		return a.position - b.position;
 	});
-	var noCategoryStr = "";	
-	var categories = {};
-	for (var channel of channels) {
-		channel = channel[1]; // [channelId, channel]
-		if (channel.type === "category") { // category
-			categories[channel.id] = categories[channel.id] || []; // add blank category array to list if not exist
-		}
-		else if (channel.parent) { // in a category
-			categories[channel.parentID] = categories[channel.parentID] || []; // create category array if not exist
-			categories[channel.parentID].push(channel.id);
-		}
-		else { // not in a category
-			noCategoryStr += channel.name;
-			if (doId) {
-				noCategoryStr += " (`" + channel.id + "`)";
-			}
-			noCategoryStr += "\n";
-		}
-	}
+
+	// Sort children channels
+	categories.each(category => {
+		// .children property is read-only, so make a new property
+		category.sortedChildren = category.children.sort((a, b) => {
+			return a.position - b.position;
+		});
+	});
+
+	// Build strings of channels in each category
 	let fields = [];
-	for (var category in categories) {
-		category = channels.get(category);
-		var catStr = "**• " + category.name + "**";
+	categories.each(category => {
+		let catStr = "**• " + category.name + "**";
 		if (doId) {
 			catStr += " (`" + category.id + "`)";
 		}
 		catStr += "\n";
-		var chanStr = "";
-		var vcStr = ""; // VCs are shunted to the bottom of a category, so make sure we place it last
-		for (var channel of categories[category.id]) {
-			channel = channels.get(channel);
-			if (channel.type === "voice") {
-				vcStr += "🔈" + channel.name;
-				if (doId) {
-					vcStr += " (`" + channel.id + "`)";
-				}
-				vcStr += "\n";
+		let chanStr = "";
+		for (let channel of category.sortedChildren) {
+			channel = channel[1];
+			chanStr += channel.toString();
+			if (doId) {
+				chanStr += " (`" + channel.id + "`)";
 			}
-			else {
-				chanStr += channel.toString();
-				if (doId) {
-					chanStr += " (`" + channel.id + "`)";
-				}
-				chanStr += "\n";
-			}
+			chanStr += "\n";
 		}
-		fields.push([catStr, chanStr + vcStr, true]);
-	}
-	var embed = embedify("Channel List", CATEGORIES.INFO.color, fields, "", noCategoryStr, "", "", "", "", "");
+		fields.push([catStr, chanStr, true]);
+	});
+
+	let embed = embedify("Channel List", CATEGORIES.INFO.color, fields, "", noCategoryStr, "", "", "", "", "");
 	msg.channel.send({ embed: embed});
 };
 
