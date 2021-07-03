@@ -59,7 +59,7 @@ function user_form(member) {
 exports.user_form = user_form;
 
 /**
- * Creates a RichEmbed object with appropriate properties
+ * Creates a MessageEmbed object with appropriate properties
  * @param {string} title Title of Embed object
  * @param {('hex')} color Sidebar color
  * @param {string[]} fields Array of Field arrays -- each Field array must have a title string and value string, and optionally: inline boolean, seperator char
@@ -71,14 +71,14 @@ exports.user_form = user_form;
  * @param {('Timestamp')} [time] Time
  * @param {('URL')} [url] URL
  * @param {Object} file File to upload with the embed
- * @returns {Object} A RichEmbed object
+ * @returns {Object} A MessageEmbed object
  * @throws Returns the object passed in if the type passed in is invalid
  */
 function embedify(title, color, fields, author = "", desc = "", footer = "", image = "", thumb = "", time = "", url = "", file = "") {
-    var embedObject = new Discord.RichEmbed();
+    var embedObject = new Discord.MessageEmbed();
 
     if (file !== "" && file.attachment && file.attachment !== "")
-        embedObject.attachFile(file);
+        embedObject.attachFiles([file]);
 
     embedObject.setTitle(title);
     embedObject.setColor(color);
@@ -171,9 +171,9 @@ function embedify(title, color, fields, author = "", desc = "", footer = "", ima
 exports.embedify = embedify;
 
 /**
- * Creates a RichEmbed showing the correct usage of a command
+ * Creates a MessageEmbed showing the correct usage of a command
  * @param {Object} command The Command object
- * @returns {Object} A RichEmbed object
+ * @returns {Object} A MessageEmbed object
  */
 function invalid_usage(command)
 {
@@ -185,9 +185,9 @@ function invalid_usage(command)
 exports.invalid_usage = invalid_usage;
 
 /**
- * Creates a RichEmbed showing information about a command
+ * Creates a MessageEmbed showing information about a command
  * @param {Object} command The Command object
- * @returns {Object} A RichEmbed object
+ * @returns {Object} A MessageEmbed object
  */
 function command_info(command)
 {

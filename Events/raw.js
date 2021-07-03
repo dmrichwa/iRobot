@@ -16,8 +16,7 @@ module.exports = async (client, event) => {
     // if the message is already in the cache, don't re-emit the event
     if (channel.messages.has(data.message_id)) return;
 
-    // if you're on the master/v12 branch, use `channel.messages.fetch()`
-    const message = await channel.fetchMessage(data.message_id);
+    const message = await channel.messages.fetch(data.message_id);
 
     // custom emojis reactions are keyed in a `name:ID` format, while unicode emojis are keyed by names
     // if you're on the master/v12 branch, custom emojis reactions are keyed by their ID
