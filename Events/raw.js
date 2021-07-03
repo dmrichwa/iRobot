@@ -18,9 +18,8 @@ module.exports = async (client, event) => {
 
     const message = await channel.messages.fetch(data.message_id);
 
-    // custom emojis reactions are keyed in a `name:ID` format, while unicode emojis are keyed by names
-    // if you're on the master/v12 branch, custom emojis reactions are keyed by their ID
-    const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
+    // custom emojis reactions are keyed in an `ID` format, while unicode emojis are keyed by names
+    const emojiKey = (data.emoji.id) ? `${data.emoji.id}` : data.emoji.name;
     const reaction = message.reactions.cache.get(emojiKey);
 
     client.emit(events[event.t], reaction, user);
