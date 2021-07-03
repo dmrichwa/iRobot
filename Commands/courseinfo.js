@@ -26,8 +26,8 @@ exports.run = async (client, msg, args) => {
 			msg.channel.send(str);
 		}
 		catch (error) {
-			if (error.statusCode) {
-				switch (error.statusCode) {
+			if (error.response && error.response.statusCode) {
+				switch (error.response.statusCode) {
 					case 400: // Bad Request -- usually happens if illegal symbols are present
 						msg.channel.send({ embed: invalid_usage(this) });
 						break;
