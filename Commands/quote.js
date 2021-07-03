@@ -5,7 +5,7 @@ exports.run = async (client, msg, args) => {
 		return msg.channel.send({ embed: invalid_usage(this) });
 	}
 	const messageId = args[1];
-	const channel = (args.length >= 3 ? msg.guild.channels.get(args[2]) : msg.channel);
+	const channel = (args.length >= 3 ? msg.guild.channels.cache.get(args[2]) : msg.channel);
 	if (!channel) { // could not find channel
 		return msg.channel.send("Could not find channel");
 	}
@@ -14,14 +14,12 @@ exports.run = async (client, msg, args) => {
 	}
 	(async () => {
 		await new Promise(next => {
-			channel.fetchMessages({ limit: 1, around: messageId }).then(messages => {
+			channel.messages.fetch({ limit: 1, around: messageId }).then(messages => {
 				if (messages.get(messageId)) {
 					const message = messages.get(messageId);
-					//TODO: once updated to discord.js v11.4, this can just be msg.url()
-					const jumpToLink = "https://discordapp.com/channels/" + message.guild.id + "/" + message.channel.id + "/" + message.id;
 					let embed = embedify("", (message.member ? message.member.displayHexColor : rainbow(25 * Math.random(25))),
 					[
-					], [message.author.username, message.author.avatarURL], message.content + "\n\n[Jump to message](" + jumpToLink + ")", dateFormat(message.createdAt, "MEDTIMEDATE") + " in #" + channel.name, "", "", "", "");
+					], [message.author.username, message.author.avatarURL()], message.content + "\n\n[Jump to message](" + message.url + ")", dateFormat(message.createdAt, "MEDTIMEDATE") + " in #" + channel.name, "", "", "", "");
 					msg.channel.send({ embed: embed });
 				}
 				else {

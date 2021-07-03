@@ -8,7 +8,7 @@ exports.run = async (client, msg, args) => {
 	{
 		await new Promise(next =>
 		{
-			channel.fetchMessages( { limit: 1, around: messageId } ).then(messages =>
+			channel.messages.fetch( { limit: 1, around: messageId } ).then(messages =>
 			{
 				if (messages.get(messageId))
 				{
@@ -17,7 +17,7 @@ exports.run = async (client, msg, args) => {
 					var embed = embedify("", CATEGORIES.MISC.color,
 					[
 						
-					], [message.author.username, message.author.avatarURL], message.content, dateFormat(message.createdAt, "MEDTIMEDATE") + " in #" + channel.name, "", "", "", "");
+					], [message.author.username, message.author.avatarURL()], message.content, dateFormat(message.createdAt, "MEDTIMEDATE") + " in #" + channel.name, "", "", "", "");
 					msg.channel.send({ embed: embed });
 				}
 				else

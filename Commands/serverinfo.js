@@ -2,9 +2,9 @@ const { dateFormat, embedify, get_role_array, boolean_to_yesno } = require("../U
 
 exports.run = async (client, msg, args) => {
 	const doFull = args[1] && args[1].toLowerCase() === "full";
-	const channels = msg.guild.channels.array();
-	const emojis = msg.guild.emojis.array();
-	const members = msg.guild.members.array();
+	const channels = msg.guild.channels.cache.array();
+	const emojis = msg.guild.emojis.cache.array();
+	const members = msg.guild.members.cache.array();
 	const roles = get_role_array(msg.guild);
 
 	var textChannels = [], voiceChannels = [], categories = [];
@@ -62,7 +62,7 @@ exports.run = async (client, msg, args) => {
 
 	embed = embedify(title, (msg.guild.owner.displayColor ? msg.guild.owner.displayHexColor : "#000000"),
 	[
-	], "", str, "", "", msg.guild.iconURL, "", "");
+	], "", str, "", "", msg.guild.iconURL(), "", "");
 	msg.channel.send({ embed: embed });
 };
 

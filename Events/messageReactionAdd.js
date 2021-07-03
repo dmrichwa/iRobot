@@ -10,7 +10,7 @@ module.exports = async (client, reaction, user) => {
 			var attachName = "";
 			var attachType = "";
 			if (reaction.message.attachments.size > 0) { // if there's an image, add it to the embed
-				if (reaction.message.attachments.first().filesize >= 4500000) {// cap image size to 4.5 MiB to prevent errors
+				if (reaction.message.attachments.first().size >= 4500000) {// cap image size to 4.5 MiB to prevent errors
 					return reaction.message.channel.send("File size too big! (Must be < 4,500,000 bytes)");
 				}
 				attach = reaction.message.attachments.first();
@@ -35,8 +35,8 @@ module.exports = async (client, reaction, user) => {
 			}
 			var embed = embedify("", rainbow(25, Math.random() * 25),
 			[
-			], [reaction.message.author.username, reaction.message.author.avatarURL], reaction.message.content, dateFormat(reaction.message.createdAt, "MEDTIMEDATE") + " in #" + reaction.message.channel.name, (attachType === "image" ? "attachment://" + attachName : ""), "", "", "", {attachment: attachURL, name: attachName});
-			reaction.message.guild.channels.get(CHAN_TYLER_HALLOFLAME).send({ embed: embed }).catch(error => {
+			], [reaction.message.author.username, reaction.message.author.avatarURL()], reaction.message.content, dateFormat(reaction.message.createdAt, "MEDTIMEDATE") + " in #" + reaction.message.channel.name, (attachType === "image" ? "attachment://" + attachName : ""), "", "", "", {attachment: attachURL, name: attachName});
+			reaction.message.guild.channels.cache.get(CHAN_TYLER_HALLOFLAME).send({ embed: embed }).catch(error => {
 				reaction.message.channel.send("Error " + error.code + ": " + error.message);
 				console.log(error);
 			});
@@ -169,10 +169,10 @@ module.exports = async (client, reaction, user) => {
 
 					function tictactoe_victory(boardPos) {
 						if (game.board[boardPos] === "🇽") { // creator won
-							descString += client.users.get(game.creator).toString() + " won!";
+							descString += client.users.cache.get(game.creator).toString() + " won!";
 						}
 						else { // opponent won
-							descString += client.users.get(game.opponent).toString() + " won!";
+							descString += client.users.cache.get(game.opponent).toString() + " won!";
 						}
 						game.gameOver = true;
 					}
@@ -190,7 +190,7 @@ module.exports = async (client, reaction, user) => {
 							game.gameOver = true;
 						}
 						else {
-							descString += "It's " + client.users.get(game.turn).toString() + "'s turn! You're " + nextTile;
+							descString += "It's " + client.users.cache.get(game.turn).toString() + "'s turn! You're " + nextTile;
 						}
 					}
 
@@ -201,7 +201,7 @@ module.exports = async (client, reaction, user) => {
 							return;
 						}
 						(async () => {
-							for (var react of message.reactions) {
+							for (var react of message.reactions.cache) {
 								if (react[1].me) {
 									await react[1].remove();
 								}

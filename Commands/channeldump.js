@@ -8,10 +8,10 @@ exports.run = async (client, msg, args) => {
 		if (args.length < 2) {
 			return msg.channel.send({ embed: invalid_usage(this) });
 		}
-		const guild = (args[3] ? client.guilds.get(args[3]) : msg.guild); // guildId is 3rd arg or this guild if not provided
-		const channel = guild.channels.get(args[1]);
+		const guild = (args[3] ? client.guilds.cache.get(args[3]) : msg.guild); // guildId is 3rd arg or this guild if not provided
+		const channel = guild.channels.cache.get(args[1]);
 		if (!channel) { // could not find channel
-			return msg.channel.send({ embed: invalid_usage(this) });
+			return msg.channel.send(`Could not find channel ${args[1]}`);
 		}
 		var amount = args[2] ? Number(args[2]) : 100; // default to 100 messages
 		(async () => {
@@ -20,7 +20,7 @@ exports.run = async (client, msg, args) => {
 			var count = 0;
 			while (amount > 0) {
 				await new Promise(next => {
-					channel.fetchMessages({ limit: 100, before: beforeMsg }).then(messages => {
+					channel.messages.fetch({ limit: 100, before: beforeMsg }).then(messages => {
 						console.log("Dumping; " + amount + " left to go");
 						amount -= 100; // subtract 100 from messages remaining
 						for (var message of messages) {
@@ -83,13 +83,19 @@ exports.run = async (client, msg, args) => {
 				return escape(match).replace(/%u/g, "\\u");
 			});
 			const fileName = guild.name + "-" + channel.name + "-" + Date.now() + ".txt";
-			fs.writeFile("./Objects/Chandump/" + fileName, str, { encoding: "utf-8", flag: "w" }, function (err) {
+			fs.promises.mkdir("./Objects/Chandump", { recursive: true }, (err) => {
 				if (err) {
 					console.log(err);
 				}
-				console.log(fileName + " dumped " + count + " " + pluralize("message", "messages", count));
+			}).then(_ => {
+				fs.writeFile("./Objects/Chandump/" + fileName, str, { encoding: "utf-8", flag: "w" }, function (err) {
+					if (err) {
+						console.log(err);
+					}
+					console.log(fileName + " dumped " + count + " " + pluralize("message", "messages", count));
+				});
+				msg.channel.send(count + " " + pluralize("message", "messages", count) + " dumped");
 			});
-			msg.channel.send(count + " " + pluralize("message", "messages", count) + " dumped");
 		})();
 };
 

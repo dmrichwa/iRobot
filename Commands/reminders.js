@@ -53,7 +53,7 @@ exports.run = async (client, msg, args) => {
 		}
 		let embed = embedify("", rainbow(25, Math.random() * 25),
 		[
-		], ["Reminder List", msg.author.avatarURL], str, remindList.length + " " + pluralize("reminder", "reminders", remindList.length), "", "", "", "");
+		], ["Reminder List", msg.author.avatarURL()], str, remindList.length + " " + pluralize("reminder", "reminders", remindList.length), "", "", "", "");
 		msg.channel.send({ embed: embed });
 	})();
 };

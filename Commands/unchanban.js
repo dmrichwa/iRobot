@@ -11,7 +11,7 @@ exports.run = async (client, msg, args) => {
 	
 	get_channel(args[1], msg.guild).then(channel => {
 		get_member(args.splice(2).join(" "), msg.guild).then(member => {
-			channel.overwritePermissions(member, { SEND_MESSAGES: true, VIEW_CHANNEL: true, ADD_REACTIONS: true }, msg.content).then(() => {
+			channel.updateOverwrite(member, { SEND_MESSAGES: null, VIEW_CHANNEL: null, ADD_REACTIONS: null }, msg.content).then(() => {
 				var embed = embedify("", CATEGORIES.STAFF.color,
 				[
 				], "", member.toString() + " unbanned from " + channel.toString(), "", "", "", "", "");

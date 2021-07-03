@@ -8,7 +8,7 @@ exports.run = async (client, msg, args) => {
 	(async () => {
 		for (var channel of CHANS_ANNOUNCE) {
 			await new Promise(next => {
-				const guild = client.guilds.get(channel[1]);
+				const guild = client.guilds.cache.get(channel[1]);
 				get_channel(channel[0], guild).then(channel => {
 					console.log("Sending announcement in " + guild + " to " + channel.name);
 					var embed = embedify("Bot Announcement", rainbow(25, Math.random() * 25),

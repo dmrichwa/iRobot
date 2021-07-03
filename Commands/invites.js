@@ -14,7 +14,7 @@ exports.run = async (client, msg, args) => {
 		let title = "Invites";
 		let fields = [];
 		for (var invite of inviteList) {
-			// RichEmbeds have a max field count of 25 (TODO: this should really be done in embedify)
+			// MessageEmbeds have a max field count of 25 (TODO: this should really be done in embedify)
 			if (field_count >= 25) {
 				title = "Invites (first 25 shown)";
 				break;

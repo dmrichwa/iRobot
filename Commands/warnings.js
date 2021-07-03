@@ -11,7 +11,7 @@ exports.run = async (client, msg, args) => {
 			if (!warnings[user.id] || warnings[user.id].length === 0) {
 				var embed = embedify("", rainbow(25, Math.random() * 25),
 				[
-				], ["Warnings for " + user.username, user.avatarURL], "No warnings", "", "", "", "", "");
+				], ["Warnings for " + user.username, user.avatarURL()], "No warnings", "", "", "", "", "");
 				return msg.channel.send({ embed: embed });
 			}
 			var warnList = warnings[user.id];
@@ -20,11 +20,11 @@ exports.run = async (client, msg, args) => {
 			});
 			var str = "";
 			for (var warning of warnList) {
-				str += "**" + dateFormat(warning.time, "MEDTIMEDATE") + "** by " + client.users.get(warning.warner) +  "\n" + warning.msg + "\n";
+				str += "**" + dateFormat(warning.time, "MEDTIMEDATE") + "** by " + client.users.cache.get(warning.warner) +  "\n" + warning.msg + "\n";
 			}
 			var embed = embedify("", rainbow(25, Math.random() * 25),
 			[
-			], ["Warnings for " + user.username, user.avatarURL], str, warnList.length + " " + pluralize("warning", "warnings", warnList.length), "", "", "", "");
+			], ["Warnings for " + user.username, user.avatarURL()], str, warnList.length + " " + pluralize("warning", "warnings", warnList.length), "", "", "", "");
 			msg.channel.send({ embed: embed });
 		})();
 	}).catch(error => {

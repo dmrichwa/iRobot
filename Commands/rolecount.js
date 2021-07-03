@@ -21,13 +21,13 @@ exports.run = async (client, msg, args) => {
 	roleArray.sort((a, b) => {
 		return b.members.size - a.members.size;
 	});
-	let str = "None";
+	let str = "";
 	for (let role of roleArray) {
 		str += "(" + role.members.size + ") " + format_role(role, doId, true) + "\n";
 	}
 	let embed = embedify("", CATEGORIES.INFO.color,
 	[
-		["Counted Roles", str, true, "\n"],
+		["Counted Roles", str || "None", true, "\n"],
 	], "", "", "", "", "", "", "");
 	msg.channel.send({ embed: embed });
 };

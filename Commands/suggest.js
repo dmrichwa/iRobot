@@ -26,8 +26,8 @@ exports.run = async (client, msg, args) => {
 	var embed = embedify("", color,
 	[
 		
-	], ["Suggestion from " + msg.author.username, msg.author.avatarURL], suggestion, "", "attachment://image.jpg", "", "", "", {attachment: image, name: "image.jpg"});
-	msg.guild.channels.get(channelId).send({ embed: embed }).then(sentMsg => { // add upvote and downvote
+	], ["Suggestion from " + msg.author.username, msg.author.avatarURL()], suggestion, "", "attachment://image.jpg", "", "", "", {attachment: image, name: "image.jpg"});
+	msg.guild.channels.cache.get(channelId).send({ embed: embed }).then(sentMsg => { // add upvote and downvote
 		sentMsg.react(EMOJI_UPVOTE).then(() => {
 			sentMsg.react(EMOJI_DOWNVOTE);
 		});

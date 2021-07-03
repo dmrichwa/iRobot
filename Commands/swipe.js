@@ -21,7 +21,7 @@ exports.run = async (client, msg, args) => {
 		var embed = embedify("Food from " + msg.member.displayName, rainbow(25, Math.random() * 25),
 		[
 			["Claimers", "None", true],
-		], "🔴 OPEN 🔴", swipeMsg, "Claimed: 0 / " + count + " • " + dateFormat(msg.createdAt, "SHORTTIMEDATEREV"), "", msg.author.avatarURL, "", "");
+		], "🔴 OPEN 🔴", swipeMsg, "Claimed: 0 / " + count + " • " + dateFormat(msg.createdAt, "SHORTTIMEDATEREV"), "", msg.author.avatarURL(), "", "");
 
 		msg.channel.send({ embed: embed }).then(message => {
 			(async () => {

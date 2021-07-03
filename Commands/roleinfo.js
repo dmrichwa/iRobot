@@ -3,7 +3,7 @@ const { CATEGORIES } = require("../Utils/constants.js");
 
 exports.run = async (client, msg, args) => {
 	var highRole;
-	msg.guild.roles.forEach(role => {
+	msg.guild.roles.cache.each(role => {
 		if (!highRole || role.position > highRole.position) {
 			highRole = role;
 		}
@@ -20,7 +20,7 @@ exports.run = async (client, msg, args) => {
 		const color = role.hexColor;
 		var str = "🆔 **ID**: " + role.id + "\n"
 		str += "🌈 **Color**: " + (color === "#000000" ? "None" : color) + "\n"
-		str += "👪 **Members**: " + role.members.size + " / " + msg.guild.members.size + " (" + Math.round(role.members.size / msg.guild.members.size * 10 * 100) / 10 + "%)\n"
+		str += "👪 **Members**: " + role.members.size + " / " + msg.guild.members.cache.size + " (" + Math.round(role.members.size / msg.guild.members.cache.size * 10 * 100) / 10 + "%)\n"
 		if (doFull) {
 			str += "🏅 **Position**: " + role.position + " / " + highRole.position + "\n"
 			str += "👺 **Mentionable**: " + boolean_to_yesno(role.mentionable) + "\n"

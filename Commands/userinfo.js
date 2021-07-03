@@ -34,18 +34,18 @@ exports.run = async (client, msg, args) => {
 		if (member.nickname) {
 			str += "📛 **Nickname**: " + member.nickname + "\n"
 		}
-		str += "🌈 **Color**: " + (member.colorRole ? member.displayHexColor : "None") + "\n"
+		str += "🌈 **Color**: " + (member.roles.color ? member.displayHexColor : "None") + "\n"
 		str += "🌐 **Discord Join Date**: " + dateFormat(member.user.createdAt, "MEDTIMEDATE") + "\n"
 		str += "📆 **Server Join Date**: " + dateFormat(member.joinedAt, "MEDTIMEDATE") + "\n"
 		if (doFull) {
-			str += "🛡 **Roles (" + (member.roles.size - 1) + ")**: " + member.roles.array().filter(r => r !== msg.guild.defaultRole).sort((a, b) => { return b.position - a.position }).join(", ") + "\n"
+			str += "🛡 **Roles (" + (member.roles.cache.size - 1) + ")**: " + member.roles.cache.filter(r => r !== msg.guild.roles.everyone).sort((a, b) => { return b.position - a.position }).array().join(", ") + "\n"
 		}
 		else {
-			str += "🛡 **Roles**: " + (member.roles.size - 1) + "\n"
+			str += "🛡 **Roles**: " + (member.roles.cache.size - 1) + "\n"
 		}
-		var embed = embedify("[" + status + "] " + user_form(member) + (member.user.bot ? " 🤖" : ""), (member.colorRole ? member.displayHexColor : CATEGORIES.INFO.color),
+		var embed = embedify("[" + status + "] " + user_form(member) + (member.user.bot ? " 🤖" : ""), (member.roles.color ? member.displayHexColor : CATEGORIES.INFO.color),
 		[
-		], "", str, "", "", member.user.displayAvatarURL, "", "");
+		], "", str, "", "", member.user.displayAvatarURL({ dynamic: true, size: 4096}), "", "");
 		msg.channel.send({ embed: embed});
 	}).catch(error => {
 		msg.channel.send("Error: " + error.message);

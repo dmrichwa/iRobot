@@ -2,6 +2,8 @@ const { got, embedify, invalid_usage, pluralize } = require("../Utils/");
 const { CATEGORIES, COLORS } = require("../Utils/constants.js");
 
 exports.run = async (client, msg, args) => {
+	// Disabled until converted to use proper instagram API
+	return msg.channel.send("Command disabled");
 	(async () => {
 		if (args.length < 2) {
 			return msg.channel.send(invalid_usage(this));
@@ -13,9 +15,11 @@ exports.run = async (client, msg, args) => {
 			response = await got(url);
 		}
 		catch (error) {
-			if (error.statusCode && error.statusCode !== 404) // display error, but not if 404
-				return msg.channel.send("Error " + error.statusCode + " trying to find user `" + args[1] + "`");
-			console.log(error);
+			// Display error if not 404 (which indicates user is not found)
+			if (error.response?.statusCode !== 404) {
+				console.log(error);
+				return msg.channel.send("Error " + (error.response?.statusCode ?? "unknown") + " trying to find user `" + args[1] + "`");
+			}
 			return msg.channel.send("Could not find user `" + args[1] + "`");
 		}
 		if (!response) {
@@ -83,7 +87,7 @@ exports.run = async (client, msg, args) => {
 
 exports.config = {
 	delete: false,
-	hidden: false,
+	hidden: true,
 };
 
 exports.help = {

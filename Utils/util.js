@@ -59,7 +59,7 @@ function user_form(member) {
 exports.user_form = user_form;
 
 /**
- * Creates a RichEmbed object with appropriate properties
+ * Creates a MessageEmbed object with appropriate properties
  * @param {string} title Title of Embed object
  * @param {('hex')} color Sidebar color
  * @param {string[]} fields Array of Field arrays -- each Field array must have a title string and value string, and optionally: inline boolean, seperator char
@@ -71,14 +71,14 @@ exports.user_form = user_form;
  * @param {('Timestamp')} [time] Time
  * @param {('URL')} [url] URL
  * @param {Object} file File to upload with the embed
- * @returns {Object} A RichEmbed object
+ * @returns {Object} A MessageEmbed object
  * @throws Returns the object passed in if the type passed in is invalid
  */
 function embedify(title, color, fields, author = "", desc = "", footer = "", image = "", thumb = "", time = "", url = "", file = "") {
-    var embedObject = new Discord.RichEmbed();
+    var embedObject = new Discord.MessageEmbed();
 
     if (file !== "" && file.attachment && file.attachment !== "")
-        embedObject.attachFile(file);
+        embedObject.attachFiles([file]);
 
     embedObject.setTitle(title);
     embedObject.setColor(color);
@@ -171,9 +171,9 @@ function embedify(title, color, fields, author = "", desc = "", footer = "", ima
 exports.embedify = embedify;
 
 /**
- * Creates a RichEmbed showing the correct usage of a command
+ * Creates a MessageEmbed showing the correct usage of a command
  * @param {Object} command The Command object
- * @returns {Object} A RichEmbed object
+ * @returns {Object} A MessageEmbed object
  */
 function invalid_usage(command)
 {
@@ -185,9 +185,9 @@ function invalid_usage(command)
 exports.invalid_usage = invalid_usage;
 
 /**
- * Creates a RichEmbed showing information about a command
+ * Creates a MessageEmbed showing information about a command
  * @param {Object} command The Command object
- * @returns {Object} A RichEmbed object
+ * @returns {Object} A MessageEmbed object
  */
 function command_info(command)
 {
@@ -254,9 +254,9 @@ exports.count_commands = count_commands;
  */
 function get_role_array(guild)
 {
-    return guild.roles.array().filter(function(role) {
-        return role !== guild.defaultRole;
-    }).sort((a, b) => {
+    return guild.roles.cache.filter(function(role) {
+        return role !== guild.roles.everyone;
+    }).array().sort((a, b) => {
         if (a.name.toLowerCase() < b.name.toLowerCase())
             return -1;
         else if (b.name.toLowerCase() < a.name.toLowerCase())
@@ -391,7 +391,7 @@ function get_user(input, guild = "", defaultUser = "")
             return false;
         }
         if (guild) {
-            for (var member of guild.members) { // first search through only the guild, if given
+            for (var member of guild.members.cache) { // first search through only the guild, if given
                 if (get_user_lookthru(member[1].user)) { // [userid, member object]
                     return;
                 }
@@ -403,7 +403,7 @@ function get_user(input, guild = "", defaultUser = "")
                 return resolve(fuzzy); // we have only one fuzzy match, so we can safely assume this is the user they want
             }
         }
-        for (var user of client.users) { // if we cannot find someone in the guild, try to find from other servers
+        for (var user of client.users.cache) { // if we cannot find someone in the guild, try to find from other servers
             if (get_user_lookthru(user[1])) { // [userid, user object]
                 return;
             }
@@ -415,7 +415,7 @@ function get_user(input, guild = "", defaultUser = "")
             return resolve(fuzzy); // we have only one fuzzy match, so we can safely assume this is the user they want
         }
         // we could not find the user in our database, so try to fetch by ID
-        client.fetchUser(input).then((user) => {
+        client.users.fetch(input).then((user) => {
             return resolve(user);
         }).catch((error) => {
             return reject(new Error("Could not find user `" + input + "` (no matches)"));
@@ -450,7 +450,7 @@ function get_member(input, guild, defaultMember = "")
                 return reject(new Error("Please provide a member"));
             }
         }
-        for (var member of guild.members) {
+        for (var member of guild.members.cache) {
             member = member[1]; // [userId, member object]
 			var username = member.user.username.toLowerCase(); // sanitized username
 			var nickname = (member.nickname || "").toLowerCase(); // sanitized nickname
@@ -565,7 +565,7 @@ function get_channel(input, guild)
             }
             return false;
         }
-		for (var channel of guild.channels) { // first look through just text channels
+		for (var channel of guild.channels.cache) { // first look through just text channels
 			if (channel[1].type !== "text") {
 				continue;
 			}
@@ -579,7 +579,7 @@ function get_channel(input, guild)
 		if (fuzzy) {
 			return resolve(fuzzy); // we have only one fuzzy match, so we can safely assume this is the channel they want
 		}
-		for (var channel of guild.channels) { // then look through the other types of channels (voice, category)
+		for (var channel of guild.channels.cache) { // then look through the other types of channels (voice, category)
 			if (get_channel_lookthru(channel[1])) {
 				return;
 			}

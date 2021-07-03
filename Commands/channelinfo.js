@@ -14,7 +14,7 @@ exports.run = async (client, msg, args) => {
 		switch (channel.type) {
 			case "text":
 				str = "🆔 **ID**: " + channel.id + "\n"
-					+ "👪 **Members**: " + channel.members.size + " / " + msg.guild.members.size + " (" + Math.round(channel.members.size / msg.guild.members.size * 10 * 100) / 10 + "%)\n"
+					+ "👪 **Members**: " + channel.members.size + " / " + msg.guild.members.cache.size + " (" + Math.round(channel.members.size / msg.guild.members.cache.size * 10 * 100) / 10 + "%)\n"
 					+ "😏 **NSFW**: " + boolean_to_yesno(channel.nsfw) + "\n"
 					+ "📁 **Category**: " + (channel.parent ? channel.parent.name : "None") + "\n"
 					+ "💬 **Topic**: " + (channel.topic ? channel.topic : "None") + "\n"
