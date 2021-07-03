@@ -15,7 +15,7 @@ module.exports = async (client, reaction, user) => {
 				}
 				attach = reaction.message.attachments.first();
 				attachURL = attach.url;
-				attachName = attach.filename;
+				attachName = attach.name;
 				
 				const attachRegex = /\.(\w+)$/g;
 				var fileExt = attachRegex.exec(attachName);
