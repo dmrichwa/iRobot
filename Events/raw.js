@@ -21,7 +21,7 @@ module.exports = async (client, event) => {
     // custom emojis reactions are keyed in a `name:ID` format, while unicode emojis are keyed by names
     // if you're on the master/v12 branch, custom emojis reactions are keyed by their ID
     const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
-    const reaction = message.reactions.get(emojiKey);
+    const reaction = message.reactions.cache.get(emojiKey);
 
     client.emit(events[event.t], reaction, user);
 };

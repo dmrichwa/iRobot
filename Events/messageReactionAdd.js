@@ -201,7 +201,7 @@ module.exports = async (client, reaction, user) => {
 							return;
 						}
 						(async () => {
-							for (var react of message.reactions) {
+							for (var react of message.reactions.cache) {
 								if (react[1].me) {
 									await react[1].remove();
 								}
