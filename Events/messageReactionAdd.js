@@ -10,7 +10,7 @@ module.exports = async (client, reaction, user) => {
 			var attachName = "";
 			var attachType = "";
 			if (reaction.message.attachments.size > 0) { // if there's an image, add it to the embed
-				if (reaction.message.attachments.first().filesize >= 4500000) {// cap image size to 4.5 MiB to prevent errors
+				if (reaction.message.attachments.first().size >= 4500000) {// cap image size to 4.5 MiB to prevent errors
 					return reaction.message.channel.send("File size too big! (Must be < 4,500,000 bytes)");
 				}
 				attach = reaction.message.attachments.first();
