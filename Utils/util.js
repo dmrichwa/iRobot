@@ -77,7 +77,7 @@ exports.user_form = user_form;
 function embedify(title, color, fields, author = "", desc = "", footer = "", image = "", thumb = "", time = "", url = "", file = "") {
     var embedObject = new Discord.MessageEmbed();
 
-    if (file !== "" && file.attachment && file.attachment !== "")
+    if (file !== "")
         embedObject.attachFiles([file]);
 
     embedObject.setTitle(title);
