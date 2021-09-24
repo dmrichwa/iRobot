@@ -1,3 +1,4 @@
+const { MessageAttachment } = require("discord.js");
 const { embedify, rainbow } = require("../Utils/");
 const { SERV_UB, CHAN_UB_SUGGEST, EMOJI_UPVOTE, EMOJI_DOWNVOTE } = require("../Utils/constants.js");
 
@@ -19,14 +20,14 @@ exports.run = async (client, msg, args) => {
 	}
 	const color = rainbow(25, Math.random() * 25);
 	const suggestion = args.splice(1).join(" "); // remove command from the suggestion
-	var image = "";
+	let image;
 	if (msg.attachments.size > 0) { // if there's an image, add it to the embed
-		image = msg.attachments.first().url;
+		image = new MessageAttachment(msg.attachments.first().url, "image.jpg");
 	}
 	var embed = embedify("", color,
 	[
 		
-	], ["Suggestion from " + msg.author.username, msg.author.avatarURL()], suggestion, "", "attachment://image.jpg", "", "", "", {attachment: image, name: "image.jpg"});
+	], ["Suggestion from " + msg.author.username, msg.author.avatarURL()], suggestion, "", "attachment://image.jpg", "", "", "", image);
 	msg.guild.channels.cache.get(channelId).send({ embed: embed }).then(sentMsg => { // add upvote and downvote
 		sentMsg.react(EMOJI_UPVOTE).then(() => {
 			sentMsg.react(EMOJI_DOWNVOTE);
