@@ -244,7 +244,9 @@ exports.run = async (client, msg, args) => {
 			}
 		})();
 		function selfrole_finally(db) {
-			db.close();
+			if (db) {
+				db.close();
+			}
 			msg.channel.send({ embed: embed });
 		}
 	});
