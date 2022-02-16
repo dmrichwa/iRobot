@@ -3,7 +3,7 @@ exports.PREFIX = "!";
 exports.CREATOR_ID = ["163896237479690240", "232337351760805888"]; // user IDs of bot creator
 exports.EMBED_FIELD_LENGTH = 5700; // maximum length of all field values (not including titles)
 
-SERV_UB = "412821064607858698"; // UBreddit
+SERV_UB = "412821064607858698"; // UB Discord
 SERV_TYLER = "332922421382479882"; // tylersters
 exports.SERV_UB = SERV_UB;
 exports.SERV_TYLER = SERV_TYLER;
