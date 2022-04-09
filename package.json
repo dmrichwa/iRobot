@@ -8,7 +8,7 @@
     "image-average-color": "^1.0.0",
     "lastfm": "^0.9.3",
     "load-json-file": "^6.2.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "sqlite": "^4.0.23",
     "sqlite3": "^5.0.2",
     "write-json-file": "^4.3.0"
