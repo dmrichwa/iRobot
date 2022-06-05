@@ -4,13 +4,13 @@
     "chalk": "^4.1.2",
     "dateformat": "^4.6.3",
     "discord.js": "^12.5.3",
-    "got": "^11.8.2",
+    "got": "^11.8.5",
     "image-average-color": "^1.0.0",
     "lastfm": "^0.9.3",
     "load-json-file": "^6.2.0",
-    "moment": "^2.29.1",
-    "sqlite": "^4.0.23",
-    "sqlite3": "^5.0.2",
+    "moment": "^2.29.3",
+    "sqlite": "^4.1.1",
+    "sqlite3": "^5.0.8",
     "write-json-file": "^4.3.0"
   }
 }
