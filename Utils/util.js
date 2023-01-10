@@ -161,10 +161,10 @@ function embedify(title, color, fields, author = "", desc = "", footer = "", ima
             embedObject.setFooter(footer[0]);
         else
             embedObject.setFooter(footer[0], footer[1]);
-    embedObject.setImage(image);
-    embedObject.setThumbnail(thumb);
+    if (image != "") embedObject.setImage(image);
+    if (thumb != "") embedObject.setThumbnail(thumb);
     embedObject.setTimestamp(time);
-    embedObject.setURL(url);
+    if (url != "") embedObject.setURL(url);
 
     return embedObject;
 }
