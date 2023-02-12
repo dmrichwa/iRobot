@@ -4,7 +4,7 @@
     "chalk": "^4.1.2",
     "dateformat": "^4.6.3",
     "discord.js": "^12.5.3",
-    "got": "^11.8.5",
+    "got": "^12.5.3",
     "image-average-color": "^1.0.0",
     "lastfm": "^0.9.3",
     "load-json-file": "^6.2.0",
