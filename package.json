@@ -6,7 +6,7 @@
     "discord.js": "^12.5.3",
     "got": "^11.8.5",
     "image-average-color": "^1.0.0",
-    "lastfm": "^0.9.3",
+    "lastfm": "^0.9.4",
     "load-json-file": "^6.2.0",
     "moment": "^2.29.3",
     "sqlite": "^4.1.1",
