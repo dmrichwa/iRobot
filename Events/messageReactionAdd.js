@@ -1,6 +1,6 @@
 const { dateFormat, writeJsonFile, embedify, rainbow } = require("../Utils/");
-const { SERV_TYLER, CHAN_TYLER_HALLOFLAME, EMOJI_HALLOFLAME, EMOJI_FOOD, EMOJI_DELETE } = require("../Utils/constants.js");
-const { tictactoe, getFood } = require("../Objects.js");
+const { SERV_TYLER, CHAN_TYLER_HALLOFLAME, EMOJI_HALLOFLAME } = require("../Utils/constants.js");
+const { tictactoe } = require("../Objects.js");
 
 module.exports = async (client, reaction, user) => {
     if (reaction.message.guild.id === SERV_TYLER) {
@@ -41,63 +41,6 @@ module.exports = async (client, reaction, user) => {
 				console.log(error);
 			});
 		}
-	}
-	if (reaction.emoji.name === EMOJI_FOOD && user.id !== client.user.id) {
-		(async () => {
-			var food = await getFood();
-			for (var msg in food) {
-				if (msg === reaction.message.id) {
-					msg = food[msg];
-					// cut off if the max claimer count was exceeded or if they already claimed
-					if (msg.claimers.length >= msg.maxAmount || msg.claimers.includes(user.id)) {
-						return;
-					}
-
-					msg.claimers.push(user.id);
-					await writeJsonFile("./Objects/food.json", food);
-
-					var embed = msg.embed;
-					for (var field of embed.fields) {
-						if (field.name === "Claimers") {
-							var claimerString = "";
-							for (var claimer of msg.claimers) {
-								claimerString += "<@" + claimer + ">, ";
-							}
-							claimerString = claimerString.slice(0, -2);
-							if (claimerString === "") {
-								claimerString = "None";
-							}
-							field.value = claimerString;
-						}
-					}
-					embed.footer.text = "Claimed: " + msg.claimers.length + " / " + msg.maxAmount + " • " + dateFormat(msg.created, "SHORTTIMEDATEREV");
-					if (msg.claimers.length >= msg.maxAmount) {
-						embed.author.name = "";
-					}
-					else {
-						embed.author.name = "🔴 OPEN 🔴";
-					}
-
-					reaction.message.edit({ embed: embed }).catch(error => {
-						console.log("Error: " + error.message);
-					});
-				}
-			}
-		})();
-	}
-	if (reaction.emoji.name === EMOJI_DELETE && user.id !== client.user.id) {
-		(async () => {
-			var food = await getFood();
-			for (var msg in food) {
-				if (msg === reaction.message.id) {
-					if (food[msg].giver === user.id) {
-						reaction.message.delete();
-						food[msg] = undefined;
-						await writeJsonFile("./Objects/food.json", food);
-					}
-				}
-			}
-		})();
 	}
 	if ("↖⬆↗⬅⏺➡↙⬇↘".includes(reaction.emoji.name) && user.id !== client.user.id) {
 		(async () => {
