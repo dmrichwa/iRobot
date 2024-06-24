@@ -12,7 +12,6 @@ exports.ROLE_UB_MUTE = "432405235819085824"; // mute role
 
 exports.CHAN_UB_WELCOME = "553716130645278720"; // welcome channel (welcome)
 exports.CHAN_UB_SUGGEST = "414993916790571027"; // suggestions
-exports.CHAN_UB_FOOD = "484371390015995904"; // food drive
 exports.CHAN_TYLER_HALLOFLAME = "467523175111196672"; // hall-of-lame
 
 CHAN_UB_ANNOUNCE = "483299672320901159"; // UB bot-announcements
@@ -25,8 +24,6 @@ exports.CHANS_ANNOUNCE = [ [CHAN_UB_ANNOUNCE, SERV_UB], [CHAN_TYLER_ANNOUNCE, SE
 exports.EMOJI_HALLOFLAME = "342835088670851073"; // emoji used to add a message to hall-of-lame (tylersters)
 exports.EMOJI_UPVOTE = "419626452024295452"; // upvote
 exports.EMOJI_DOWNVOTE = "419626477496172554"; // downvote
-exports.EMOJI_FOOD = "💳"; // food swipe react
-exports.EMOJI_DELETE = "❌"; // deletion emoji
 exports.EMOJI_STATUSON = "480224750032125962"; // online
 exports.EMOJI_STATUSIDLE = "480224750011023360"; // idle
 exports.EMOJI_STATUSDND = "480224749654376449"; // do not disturb

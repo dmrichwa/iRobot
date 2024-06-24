@@ -15,16 +15,6 @@ module.exports = {
 	Discord: Discord,
 }
 
-module.exports.getFood = function() {
-	return new Promise(function(resolve, reject) {
-		loadJsonFile("./Objects/food.json").then(json => {
-			resolve(json);
-		}).catch(error => {
-			resolve({});
-		});
-	});
-}
-
 module.exports.getReminders = function() {
 	return new Promise(function(resolve, reject) {
 		loadJsonFile("./Objects/reminders.json").then(json => {
