@@ -1,6 +1,5 @@
 const { dateFormat, user_form, embedify } = require("../Utils");
 const { DELETE_EDIT_CHANNELS, COLORS } = require("../Utils/constants.js");
-const { run_slur_checker } = require("../Utils/slurChecker.js");
 
 module.exports = async (client, oldMessage, message) => {
     if (!message.guild) { // ignore if not in guild
@@ -16,9 +15,6 @@ module.exports = async (client, oldMessage, message) => {
 	if (message.content === oldMessage.content) { // when a message is sent which embeds something (i.e. a link), this event is erroneously triggered -- ignore (NB: blocks true embed updates; no practical impact)
 		return;
 	}
-
-	// Perform per-message functions
-	run_slur_checker(client, message);
 
 	var embed = embedify("", COLORS.EDIT,
 	[

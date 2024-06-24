@@ -9,6 +9,3 @@ config.js
 Objects/*
 /node_modules
 /.vscode
-
-# Template files
-!Objects/slurs.js.template
