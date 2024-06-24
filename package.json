@@ -3,7 +3,7 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "dateformat": "^4.6.3",
-    "discord.js": "^12.5.3",
+    "discord.js": "^14.15.3",
     "fast-average-color-node": "^3.0.0",
     "got": "^11.8.6",
     "lastfm": "^0.9.4",
