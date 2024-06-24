@@ -12,7 +12,7 @@ module.exports = {
 	sqlite3: require("sqlite3"),
 	fs: require("fs"),
 	LastFmNode: require("lastfm").LastFmNode,
-	average: require("image-average-color"),
+	average: require("fast-average-color-node"),
 	got: require("got"),
 	dateFormat: dateFormat,
 	loadJsonFile: require("load-json-file"),

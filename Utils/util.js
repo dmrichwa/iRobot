@@ -3,7 +3,6 @@ const { client } = require("../Objects.js");
 Discord = require("discord.js"); // main stuff
 sql = require("sqlite"); // database
 fs = require("fs"); // filestream
-average = require("image-average-color"); // average image color
 got = require("got"); // http stuff
 dateFormat = require("dateformat"); // formatting of dates
 
@@ -300,12 +299,12 @@ async function get_color_from_URL(url)
         {
             try
             {
-                const response = await got(url, { responseType: "buffer" });
-                average(response.body, (err, col) =>
+                average = await import("fast-average-color-node").then(m => m.default);
+                average.getAverageColor(url).then((col, err) =>
                 {
-                    if (err)
+                    if (err) 
                         reject(err);
-                    resolve(col);
+                    resolve(col.value);
                 });
             }
             catch (err)
