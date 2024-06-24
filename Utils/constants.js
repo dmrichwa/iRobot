@@ -59,14 +59,6 @@ exports.CATEGORIES = { // Command Categories
 		color: "#0000CC",
 		cmds: []
 	},
-    COURSES: {
-        name: "Course Info",
-        shortname: "Courses",
-        aliases: ["seats"],
-        desc: "Gives information and provides a watcher for UB course seating",
-        color: "#005BBB", // UB Blue
-        cmds: []
-    },
     INFO: {
         name: "Information",
         shortname: "Info",
